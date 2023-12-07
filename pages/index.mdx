@@ -1,4 +1,40 @@
-# Welcome to the Institute for Biomedical Informatics (BI-K)
+# Data-Driven Innovation in the Clinical Domain
 
-The **Institute for Biomedical Informatics (BI-K)** is a new institute founded in May 2021 at the Medical Faculty of the University of Cologne.
+Data-driven innovation is a central objective in the field of Medical Data Science (MDS), aiming to leverage both clinical and non-clinical data to generate clinical value. Despite the rapid advancement of analytical methodologies and tools, including sophisticated AI models, the adoption of data-powered analytical software still lags significantly. Previous research has explored the challenges hindering practical adoption, but our study goes further by offering a comprehensive view of the data-driven innovation process in the clinical domain.
 
+### Theoretical Framework
+
+Our research integrates best practices from diverse domains and industries with the specific challenges inherent to the clinical sphere. We present a theoretical framework to structure data-driven innovation in the clinical domain. This framework encompasses various forms of data-driven innovation in clinical settings, delineates the primary and secondary stages of the cyclic process, outlines their interdependencies with concurrent innovation cycles, and identifies primary challenges unique to each phase.
+
+### Contributions
+
+Through this work, we establish the groundwork for categorizing data-driven innovations in the clinical domain, assessing their maturity, and pinpointing key challenges. It's important to note that our focus in this research is on providing a comprehensive overview, and we refrain from providing detailed strategies for addressing these challenges. In forthcoming work, we plan to delve into technological approaches for surmounting these hurdles.
+
+import Image from "next/image";
+export const Logo = ({ path, alt }) => {
+  return (
+    <div
+      style={{
+        flex: "0 0 250px",
+        marginRight: "20px",
+        display: "inline-block",
+      }}
+    >
+      <Image
+        src={path}
+        width={250}
+        height={250}
+        alt={alt}
+        style={{ align: "top" }}
+      />
+    </div>
+  );
+};
+
+<div style={{ display: "flex", alignItems: "center", justifyContent: "left" }}>
+  <Logo
+    path="/images/UKLogo.png"
+    alt="Logo of the University of Cologne"
+  ></Logo>
+  <Logo path="/images/MeDicLogo.png" alt="Logo of the MeDIC"></Logo>
+</div>
