@@ -1,17 +1,28 @@
 import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
+import Image from 'next/image';
+import LogoIcon from "./components/logo";
+import { RiMailSendLine } from "react-icons/ri";
 
 const config: DocsThemeConfig = {
-  logo: <span>My Project</span>,
+  logo: (
+    <>
+      <LogoIcon/>
+      <span style={{ marginLeft: '.8em', fontWeight: 800 }}>
+      Data-Driven Innovation Cycle in the Clinical Domain
+      </span>
+    </>
+  ),
   project: {
     link: 'https://github.com/shuding/nextra-docs-template',
   },
   chat: {
-    link: 'https://discord.com',
+    link: "mailto:oliver.diekmeier@gmail.com",
+    icon: <RiMailSendLine  style={{height:"28px", width:"28px"}}/>
   },
-  docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
+  docsRepositoryBase: 'https://github.com/Archenciel/uk-clinical-mds-cycle-docs',
   footer: {
-    text: 'Nextra Docs Template',
+    text: 'UK BI-K Data Driven Innovation Cycle in the Clinical Domain Docs',
   },
 }
 

@@ -1,7 +1,7 @@
 {
-  "name": "nextra-docs-template",
+  "name": "uk-clinical-mds-cycle-docs",
   "version": "0.0.1",
-  "description": "Nextra docs template",
+  "description": "Documentation powered by Nextra.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -22,7 +22,8 @@
     "nextra": "latest",
     "nextra-theme-docs": "latest",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0"
   },
   "devDependencies": {
     "@types/node": "18.11.10",

@@ -1,7 +1,8 @@
 {
-  "index": "Introduction",
-  "another": "Another Page",
-  "advanced": "Advanced (A Folder)",
+  "index":"Research Introduction",
+  "team": "Research Team",
+  "introduction":"Research Introduction",
+  "data-inno-cycle": "Data-Driven Innovation Cycle",
   "about": {
     "title": "About",
     "type": "page"
@@ -9,7 +10,14 @@
   "contact": {
     "title": "Contact ↗",
     "type": "page",
-    "href": "https://twitter.com/shuding_",
+    "href": "https://www.linkedin.com/in/oliver-diekmeier-567639179/",
     "newWindow": true
-  }
+  },
+  "nephrology":"Use Case: Nephrology",
+  "institute":{
+    "title":"Biomedical Informatics Institute",
+    "type":"page",
+    "href":"https://bik.uni-koeln.de/en/"
+  },
+  "temp":"### No content"
 }
