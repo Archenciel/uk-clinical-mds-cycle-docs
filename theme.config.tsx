@@ -17,7 +17,7 @@ const config: DocsThemeConfig = {
     link: 'https://github.com/shuding/nextra-docs-template',
   },
   chat: {
-    link: "mailto:oliver.diekmeier@gmail.com",
+    link: "https://mailto:oliver.diekmeier@gmail.com",
     icon: <RiMailSendLine  style={{height:"28px", width:"28px"}}/>
   },
   docsRepositoryBase: 'https://github.com/Archenciel/uk-clinical-mds-cycle-docs',

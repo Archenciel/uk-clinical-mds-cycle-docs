@@ -1,0 +1,394 @@
+## ADPKD Patient Treatment Process (general)
+ 
+#### Initial Clinic Visit
+1) Patient Arrival and Registration
+    - Gathering patient’s medical history
+    - Noting any symptoms related to ADPKD
+2) Initial Assessment by Healthcare Professional
+    - Physical examination
+    - Review of family history for ADPKD
+
+#### Diagnostic Process
+4) Laboratory Tests
+    - Blood tests (renal function, liver function)
+    - Urine analysis
+5) Imaging Studies
+    - Ultrasound of the kidneys (most common)
+    - MRI or CT scans if necessary
+6) Genetic Counseling and Testing (if indicated)
+    - Assessing the risk of ADPKD in family members
+
+#### Treatment Decision
+7) Consultation with Nephrologist
+   * Discussing results
+   * Assessing kidney function
+8) Treatment Planning
+    - Based on stage of kidney disease
+    - Consideration of patient's overall health and comorbidities
+
+#### Treatment Implementation
+9) Management of Hypertension
+    - First-line treatment in ADPKD
+    - Regular monitoring of blood pressure
+10) Symptom Management
+    - Pain management
+    - Treatment of urinary tract infections
+    - Management of blood in urine
+11) Lifestyle Modifications
+    - Dietary changes
+    - Increased water intake
+12) Medications Specific to ADPKD
+    - Tolvaptan (if criteria met)
+    - Monitoring for side effects
+12) Regular Monitoring
+    - Kidney function tests
+    - Imaging studies
+
+#### Advanced Care (if required)
+13) Management of Kidney Failure
+    - Dialysis
+    - Kidney transplant evaluation
+14) Ongoing Support and Counseling
+    - Psychological support
+    - Education about disease progression
+15) Follow-up Visits
+    - Regular check-ups with the nephrologist
+    - Adjustments in treatment as needed
+
+### Decision Points:
+At each stage, the decision to proceed to the next step depends on the results and patient's condition.
+Regular assessment of the effectiveness of treatment and monitoring for complications.
+
+### Interactive Process Visualization
+####
+
+import React from 'react';
+import ReactFlow, { Background } from 'reactflow';
+import 'reactflow/dist/style.css';
+import ReactDOM from 'react-dom';
+import { Handle, Position } from 'reactflow';
+
+export const SemiCircularEdge = ({
+  id,
+  sourceX,
+  sourceY,
+  label,
+  style = {},
+  markerEndId,
+}) => {
+  // Define the radius of the small circle and label styles
+  const circleRadius = 18;
+  const fontSize = 12;
+  const padding = 2; // Padding around text inside the rectangle
+
+  // Adjust these for label positioning
+  const labelX = sourceX - 60;
+  const labelWidth = 80; // Maximum width of the label
+
+  // SVG path for a small circle
+  const path = `M ${sourceX} ${sourceY}
+                m -${circleRadius}, 0
+                a ${circleRadius},${circleRadius} 0 1,0 ${circleRadius * 2},0
+                a ${circleRadius},${circleRadius} 0 1,0 -${circleRadius * 2},0`;
+
+  return (
+    <g>
+      <path
+        id={id}
+        style={style}
+        className="react-flow__edge-path"
+        d={path}
+        markerEnd={markerEndId}
+      />
+      <foreignObject
+        x={labelX - labelWidth / 2}
+        y={sourceY - fontSize - padding * 2}
+        width={labelWidth}
+        height="100" // Initial height, will expand as needed
+      >
+        <div
+          xmlns="http://www.w3.org/1999/xhtml"
+          style={{
+            background: 'white',
+            color: 'black',
+            textAlign: 'center',
+            fontSize: `${fontSize}px`,
+            padding: `${padding}px`,
+            borderRadius: '5px',
+            maxWidth: `${labelWidth}px`,
+            overflowWrap: 'break-word', // Wrap long words
+            wordWrap: 'break-word', // Older browsers
+          }}
+        >
+          {label}
+        </div>
+      </foreignObject>
+    </g>
+  );
+};
+
+
+export const CustomNodeComponent = ({ data }) => {
+    // Custom Nodes to enable more interactice Flowcharts
+  const [showDetails, setShowDetails] = React.useState(false);
+  const [detailBoxPosition, setDetailBoxPosition] = React.useState({});
+  const nodeRef = React.useRef(null);
+
+  const onMouseEnter = () => {
+    if (nodeRef.current) {
+      const rect = nodeRef.current.getBoundingClientRect();
+      setDetailBoxPosition({ top: rect.bottom + window.scrollY, left: rect.left + window.scrollX });
+    }
+    setShowDetails(true);
+  };
+
+  return  (
+    <>
+    <Handle type="target" position={Position.Top} id="a" />
+        <div
+        ref={nodeRef}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={() => setShowDetails(false)}
+        style={{ 
+            padding: '10px', 
+            minWidth: '180px',
+            maxWidth: '180px',
+            color: '#333', 
+            textAlign: 'center',
+            position: 'relative',
+            fontSize: '10pt'
+        }}
+        >
+        {data.label}
+        {showDetails && ReactDOM.createPortal(
+            <div style={{ 
+            position: 'absolute', 
+            textAlign: 'left', 
+            top: `${detailBoxPosition.top}px`, 
+            left: `${detailBoxPosition.left}px`, 
+            background: 'black', 
+            border: '1px solid black', 
+            maxWidth: "500px",
+            padding: '5px', 
+            borderRadius: '5px', 
+            zIndex: 1000, 
+            color: "#ffff" 
+            }}
+            dangerouslySetInnerHTML={{ __html: data.details }}
+            />,
+            document.body
+        )}
+        </div>
+        <Handle type="source" position={Position.Bottom} id="b" />
+        {/* Left handles */}
+        <Handle
+            type="source"
+            position="left"
+            id="left1"
+            style={{ top: '50%', visibility:"hidden" }}  
+        />
+    </>
+  );
+};
+
+export const Flow = () => {
+const initialNodes = [
+  // Clinic Visit
+  {
+    id: '1',
+    position: { x: 100, y: 50 },
+    type: 'customNode',
+    data: { 
+      label: 'Patient Arrival and Registration',
+      details: '<div> <b>Details:</b> Patient provides personal and medical history, symptoms related to ADPKD. </div>'
+    },
+    style: { background: '#FFD580' }
+  },
+  {
+    id: '2',
+    position: { x: 100, y: 150 },
+    type: 'customNode',
+    data: {
+      label: 'Initial Assessment by Healthcare Professional',
+      details: '<b>Details:</b> Physical examination and review of family history for ADPKD.'
+    },
+    style: { background: '#FFD580' }
+  },
+  {
+    id: '3',
+    position: { x: 100, y: 250 },
+    type: 'customNode',
+    data: {
+      label: 'Laboratory Tests',
+      details: '<b>Details:</b> Blood tests for renal and liver function, urine analysis.'
+    },
+    style: { background: '#FFD580' }
+  },
+  {
+    id: '4',
+    position: { x: 100, y: 350 },
+    type: 'customNode',
+    data: {
+      label: 'Imaging Studies',
+      details: '<b>Details:</b> Ultrasound, MRI, or CT scans to assess kidneys and cysts.'
+    },
+    style: { background: '#FFD580' }
+  },
+  {
+    id: '5',
+    position: { x: 100, y: 450 },
+    type: 'customNode',
+    data: {
+      label: 'Genetic Counseling and Testing (if indicated)',
+      details: '<b>Details:</b> Assessing risk of ADPKD in family members, genetic testing if necessary.'
+    },
+    style: { border: '3px dashed #ff8c00', background: '#FFD599' }
+  },
+
+  // Treatment Decision
+  {
+    id: '6',
+    position: { x: 400, y: 250 },
+    type: 'customNode',
+    data: {
+      label: 'Consultation with Nephrologist on Results',
+      details: '<b>Details:</b> Discussion of test results, kidney function assessment, treatment options.'
+    },
+    style: { background: '#FFC0CB' }
+  },
+  {
+    id: '7',
+    position: { x: 400, y: 350 },
+    type: 'customNode',
+    data: {
+      label: 'Treatment Planning',
+      details: '<b>Details:</b> Developing a personalized treatment plan based on stage of kidney disease and overall health.'
+    },
+    style: { background: '#FFC0CB' }
+  },
+
+  // At Home
+  {
+    id: '8',
+    position: { x: 500, y: 500 },
+    type: 'customNode',
+    data: {
+      label: 'Management of Hypertension',
+      details: '<b>Details:</b> Regular blood pressure monitoring, medications to control hypertension.'
+    },
+    style: { background: '#B7E9F7' }
+  },
+  {
+    id: '9',
+    position: { x: 500, y: 600 },
+    type: 'customNode',
+    data: {
+      label: 'Symptom Management',
+      details: '<b>Details:</b> Pain management, treatment of urinary tract infections, managing blood in urine.'
+    },
+    style: { background: '#B7E9F7' }
+  },
+  {
+    id: '10',
+    position: { x: 500, y: 700 },
+    type: 'customNode',
+    data: {
+      label: 'Lifestyle Modifications',
+      details: '<b>Details:</b> Dietary changes, increased water intake, and other lifestyle adjustments.'
+    },
+    style: { background: '#B7E9F7' }
+  },
+  {
+    id: '11',
+    position: { x: 500, y: 800 },
+    type: 'customNode',
+    data: {
+      label: 'Medications Specific to ADPKD',
+      details: '<b>Details:</b> Prescription of drugs like Tolvaptan, monitoring for side effects.'
+    },
+    style: { background: '#B7E9F7' }
+  },
+  {
+    id: '12',
+    position: { x: 500, y: 900 },
+    type: 'customNode',
+    data: {
+      label: 'Regular Monitoring',
+      details: '<b>Details:</b> Ongoing kidney function tests, periodic imaging studies.'
+    },
+    style: { background: '#B7E9F7' }
+  },
+
+  // Advanced Care
+  {
+    id: '13',
+    position: { x: 700, y: 1000 },
+    type: 'customNode',
+    data: {
+      label: 'Management of Kidney Failure (if needed)',
+      details: '<b>Details:</b> Dialysis, kidney transplant evaluation and planning.'
+    },
+    style: { border: '3px dashed #FF50CB', background: '#FFC0CB' }
+  },
+  {
+    id: '14',
+    position: { x: 700, y: 1100 },
+    type: 'customNode',
+    data: {
+      label: 'Ongoing Support and Counseling (if needed)',
+      details: '<b>Details:</b> Psychological support, education about disease progression and management.'
+    },
+    style: { border: '3px dashed #FF50CB', background: '#FFC0CB' }
+  },
+  {
+    id: '15',
+    position: { x: 700, y: 1200 },
+    type: 'customNode',
+    data: {
+      label: 'Follow-up Visits (if needed)',
+      details: '<b>Details:</b> Regular check-ups with the nephrologist, treatment adjustments as needed.'
+    },
+    style: { border: '3px dashed #FF50CB', background: '#FFC0CB' }
+  },
+];
+
+
+const initialEdges = [
+    { id: 'e1-2', source: '1', target: '2', label: 'Same day', style: { stroke: '#90ee90' } },
+    { id: 'e2-3', source: '2', target: '3', label: '1-2 weeks', style: { stroke: '#add8e6' } },
+    { id: 'e3-4', source: '3', target: '4', label: '1-2 weeks', style: { stroke: '#add8e6' } },
+    { id: 'e4-5', source: '4', target: '5', label: '2-4 weeks', style: { stroke: '#add8e6' } },
+    { id: 'e5-6', source: '5', target: '6', label: '2-4 weeks', style: { stroke: '#add8e6' } },
+    { id: 'e6-7', source: '6', target: '7', label: '1-2 weeks', style: { stroke: '#add8e6' } },
+    { id: 'e7-8', source: '7', target: '8', label: 'Immediate', style: { stroke: '#90ee90' } },
+    { id: 'e8-9', source: '8', target: '9', label: 'As needed', style: { stroke: '#ffb6c1' } },
+    { id: 'e9-10', source: '9', target: '10', label: 'Continuous', style: { stroke: '#ffb6c1' } },
+    { id: 'e10-11', source: '10', target: '11', label: 'Continuous', style: { stroke: '#ffb6c1' } },
+    { id: 'e11-12', source: '11', target: '12', label: 'Continuous', style: { stroke: '#ffb6c1' } },
+    { id: 'e12-13', source: '12', target: '13', label: 'As condition progresses', style: { stroke: '#ffa07a' } },
+    { id: 'e13-14', source: '13', target: '14', label: 'Continuous', style: { stroke: '#ffb6c1' } },
+    { id: 'e14-15', source: '14', target: '15', label: 'Regular', style: { stroke: '#90ee90' } },
+
+        // Cyclic edges for ongoing steps
+    { id: 'cyclic-8', source: '8', target: '8', type: 'custom', sourceHandle: 'left1', targetHandle: 'left2', type: 'semiCircular', label: 'Ongoing Management', arrowHeadType: 'arrowclosed', style: { strokeDasharray: '5,5', stroke: '#ade8e6' }, animated: true },
+    { id: 'cyclic-9', source: '10', target: '10', type: 'custom', sourceHandle: 'left1', targetHandle: 'left2', type: 'semiCircular', label: 'Permanent', arrowHeadType: 'arrowclosed', style: { strokeDasharray: '5,5', stroke: '#ade8e6' }, animated: true },
+    { id: 'cyclic-12', source: '12', target: '12', type: 'custom', sourceHandle: 'left1', targetHandle: 'left2', type: 'semiCircular', label: 'Regular Monitoring', arrowHeadType: 'arrowclosed', style: { strokeDasharray: '5,5', stroke: '#ade8e6' }, animated: true },
+    { id: 'cyclic-12', source: '14', target: '14', type: 'custom', sourceHandle: 'left1', targetHandle: 'left2', type: 'semiCircular', label: 'Quarterly', arrowHeadType: 'arrowclosed', style: { strokeDasharray: '5,5', stroke: '#ffa6c1' }, animated: true },
+  ];
+
+  return (
+    <div style={{ width: '100%', height: '50vh' }}>
+      <ReactFlow 
+        nodes={initialNodes} 
+        edges={initialEdges} 
+        nodeTypes={{ customNode: CustomNodeComponent }}
+        edgeTypes={{ semiCircular: SemiCircularEdge }}
+      >
+        <Background color="#aaa" gap={16} />
+      </ReactFlow>
+    </div>
+  );
+};
+
+
+<Flow />
