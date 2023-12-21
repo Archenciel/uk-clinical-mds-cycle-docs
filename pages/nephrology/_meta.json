@@ -2,5 +2,8 @@
     "nephrology":"Introduction to ADPKD",
     "adpkd-factors":"ADPKD Supporting Factors",
     "adpkd-therapies":"ADPKD Therapy Options",
-    "adpkd-process":"ADPKD Process Overview"
+    "adpkd-process":{
+        "display": "visible",
+        "title":"ADPKD Process Overview"
+    }
 }
