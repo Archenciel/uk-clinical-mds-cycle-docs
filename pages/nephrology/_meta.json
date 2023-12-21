@@ -3,7 +3,7 @@
     "adpkd-factors":"ADPKD Supporting Factors",
     "adpkd-therapies":"ADPKD Therapy Options",
     "adpkd-process":{
-        "display": "visible",
+        "display": "normal",
         "title":"ADPKD Process Overview"
     }
 }
