@@ -9,12 +9,12 @@ const config: DocsThemeConfig = {
     <>
       <LogoIcon/>
       <span style={{ marginLeft: '.8em', fontWeight: 800 }}>
-      Data-Driven Innovation Cycle in the Clinical Domain
+      Data-Driven Innovation in the Clinical Domain
       </span>
     </>
   ),
   project: {
-    link: 'https://github.com/shuding/nextra-docs-template',
+    link: 'https://github.com/Archenciel/uk-clinical-mds-cycle-docs',
   },
   chat: {
     link: "https://mailto:oliver.diekmeier@gmail.com",

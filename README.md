@@ -1,16 +1,8 @@
-# Nextra Docs Template 
+## Deployment Information
 
-This is a template for creating documentation with [Nextra](https://nextra.site).
+This research project documentation is currently deployed on Vercel:
 
-[**Live Demo →**](https://nextra-docs-template.vercel.app)
-
-[![](.github/screenshot.png)](https://nextra-docs-template.vercel.app)
-
-## Quick Start
-
-Click the button to clone this repository and deploy it on Vercel:
-
-[![](https://vercel.com/button)](https://vercel.com/new/clone?s=https%3A%2F%2Fgithub.com%2Fshuding%2Fnextra-docs-template&showOptionalTeamCreation=false)
+[![](https://vercel.com/button)](https://vercel.com/)
 
 ## Local Development
 
@@ -20,4 +12,4 @@ Then, run `pnpm dev` to start the development server and visit localhost:3000.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is based on Nextra, which is licensed under the MIT License.
