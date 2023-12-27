@@ -1,0 +1,9 @@
+{    
+"adpkd":"Introduction to ADPKD",    
+"adpkd-factors":"ADPKD Supporting Factors",
+    "adpkd-therapies":"ADPKD Therapy Options",
+    "adpkd-process-model":{
+        "display": "normal",
+        "title":"ADPKD Process Overview"
+    }
+}
