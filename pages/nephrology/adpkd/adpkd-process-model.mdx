@@ -1,8 +1,12 @@
+import UnderConstruction from '../../../components/underConstruction';
+
+<UnderConstruction/>
+
 ## ADPKD Patient Treatment Process
 
 import {Grid, Item, Divider} from '@mui/material'; // Grid version 1
 
-<div style={{textAlign:"justify"}}>
+<div style={{textAlign:"justify", margin:"1em 0em"}}>
   This documentation presents a comprehensive overview of the treatment process for patients diagnosed with Autosomal Dominant Polycystic Kidney Disease (ADPKD). 
   ADPKD is a genetic disorder characterized by the growth of cysts in the kidneys, often leading to various complications and affecting overall kidney function. 
   The purpose of this guide is to establish a common baseline for analyzing ADPKD as part of our research on data-driven innovation in the clinical domain. 
@@ -97,131 +101,11 @@ import 'reactflow/dist/style.css';
 import ReactDOM from 'react-dom';
 import { Handle, Position, MiniMap, MarkerType } from 'reactflow';
 
-export const SemiCircularEdge = ({
-  id,
-  sourceX,
-  sourceY,
-  label,
-  style = {},
-  markerEndId,
-}) => {
-  // Define the radius of the small circle and label styles
-  const circleRadius = 18;
-  const fontSize = 12;
-  const padding = 2; // Padding around text inside the rectangle
-
-  // Adjust these for label positioning
-  const labelX = sourceX - 60;
-  const labelWidth = 80; // Maximum width of the label
-
-  // SVG path for a small circle
-  const path = `M ${sourceX} ${sourceY}
-                m -${circleRadius}, 0
-                a ${circleRadius},${circleRadius} 0 1,0 ${circleRadius * 2},0
-                a ${circleRadius},${circleRadius} 0 1,0 -${circleRadius * 2},0`;
-
-  return (
-    <g>
-      <path
-        id={id}
-        style={style}
-        className="react-flow__edge-path"
-        d={path}
-        markerEnd={markerEndId}
-      />
-      <foreignObject
-        x={labelX - labelWidth / 2}
-        y={sourceY - fontSize - padding * 2}
-        width={labelWidth}
-        height="100" // Initial height, will expand as needed
-      >
-        <div
-          xmlns="http://www.w3.org/1999/xhtml"
-          style={{
-            background: 'white',
-            color: 'black',
-            textAlign: 'center',
-            fontSize: `${fontSize}px`,
-            padding: `${padding}px`,
-            borderRadius: '5px',
-            maxWidth: `${labelWidth}px`,
-            overflowWrap: 'break-word', // Wrap long words
-            wordWrap: 'break-word', // Older browsers
-          }}
-        >
-          {label}
-        </div>
-      </foreignObject>
-    </g>
-  );
-};
-
-
-export const CustomNodeComponent = ({ data }) => {
-    // Custom Nodes to enable more interactice Flowcharts
-  const [showDetails, setShowDetails] = React.useState(false);
-  const [detailBoxPosition, setDetailBoxPosition] = React.useState({});
-  const nodeRef = React.useRef(null);
-
-  const onMouseEnter = () => {
-    if (nodeRef.current) {
-      const rect = nodeRef.current.getBoundingClientRect();
-      setDetailBoxPosition({ top: rect.bottom + window.scrollY, left: rect.left + window.scrollX });
-    }
-    setShowDetails(true);
-  };
-
-  return  (
-    <>
-    <Handle type="target" position={Position.Top} id="a" />
-        <div
-        ref={nodeRef}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={() => setShowDetails(false)}
-        style={{ 
-            padding: '10px', 
-            minWidth: '180px',
-            maxWidth: '180px',
-            color: '#333', 
-            textAlign: 'center',
-            position: 'relative',
-            fontSize: '10pt'
-        }}
-        >
-        {data.label}
-        {showDetails && ReactDOM.createPortal(
-            <div style={{ 
-            position: 'absolute', 
-            textAlign: 'left', 
-            top: `${detailBoxPosition.top}px`, 
-            left: `${detailBoxPosition.left}px`, 
-            background: 'black', 
-            border: '1px solid black', 
-            maxWidth: "500px",
-            padding: '5px 10px', 
-            borderRadius: '5px', 
-            zIndex: 5000, 
-            color: "#ffff" 
-            }}
-            dangerouslySetInnerHTML={{ __html: data.details }}
-            />,
-            document.body
-        )}
-        </div>
-        <Handle type="source" position={Position.Bottom} id="b" />
-        {/* Left handles */}
-        <Handle
-            type="source"
-            position="left"
-            id="left1"
-            style={{ top: '50%', visibility:"hidden" }}  
-        />
-    </>
-  );
-};
+import DefaultNode from '../../../components/defaultNode'
+import SemiCircularEdge from '../../../components/semiCircularEdge'
 
 export const Flow = () => {
-const initialNodes = [
+const minimalJourneyNodes = [
   // Clinic Visit
   {
     id: '1',
@@ -381,7 +265,7 @@ const initialNodes = [
   },
 ];
 
-const initialEdges = [
+const minimalJourneyEdges = [
     { id: 'e1-2', source: '1', target: '2', label: 'Same day', markerEnd: { type:MarkerType.ArrowClosed, color:"white"}, style: { stroke: '#90ee90' } },
     { id: 'e2-3', source: '2', target: '3', label: '1-2 weeks', markerEnd: { type:MarkerType.ArrowClosed, color:"white"}, style: { stroke: '#add8e6' } },
     { id: 'e3-4', source: '3', target: '4', label: '1-2 weeks', markerEnd: { type:MarkerType.ArrowClosed, color:"white"}, style: { stroke: '#add8e6' } },
@@ -407,9 +291,9 @@ const initialEdges = [
   return (
     <div style={{ width: '100%', height: '50vh' }}>
       <ReactFlow 
-        nodes={initialNodes} 
-        edges={initialEdges} 
-        nodeTypes={{ customNode: CustomNodeComponent }}
+        nodes={minimalJourneyNodes} 
+        edges={minimalJourneyEdges} 
+        nodeTypes={{ customNode: DefaultNode }}
         edgeTypes={{ semiCircular: SemiCircularEdge }}
       >
 

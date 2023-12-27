@@ -1,0 +1,278 @@
+
+import {Grid, Item, Divider} from '@mui/material'; // Grid version 1
+import UnderConstruction from '../../../components/underConstruction';
+
+<UnderConstruction/>
+
+## Patient Journey
+import React, {useCallback} from 'react';
+import ReactFlow, { Background } from 'reactflow';
+import 'reactflow/dist/style.css';
+import ReactDOM from 'react-dom';
+import { Handle, Position, MiniMap, MarkerType, Controls, useNodesState,useEdgesState, addEdge, addNode } from 'reactflow';
+
+import DefaultNode from '../../../components/defaultNode'
+import GroupNode from '../../../components/groupNode'
+import SemiCircularEdge from '../../../components/semiCircularEdge'
+import StartEndEdge from '../../../components/startEndEdge';
+
+export const Flow = () => {
+
+    // Phase 0
+    const phase_0_Nodes = [
+    // Pre-Clinic Process
+        {
+            id: '0',
+            position: { x: 50, y: 50 },
+            type: 'groupNode',
+            data: { 
+            label: 'Pre-Clinical Process',
+            details: '<div> <b>Details:</b><br/> Patient provides personal and medical history, symptoms related to ADPKD. </div>'
+            },
+            style: { background: '#dbdbdbc1', color:"#000000",  width: 225, height: 320 }
+        },
+        {
+            id: '0.1',
+            position: { x: 20, y: 50 },
+            type: 'defaultNode',
+            parentNode: "0",
+            data: {
+                label: 'Recognizing the Need for Medical Attention',
+                details: '<b>Details:</b><br/> The patient, their family members or the family doctor recognize symptoms that may be associated with kidney issues, such as pain in the back or sides, changes in urine output, or hypertension.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        {
+            id: '0.2',
+            position: { x: 20, y: 150 },
+            type: 'defaultNode',
+            parentNode: "0",
+            data: {
+                label: 'Finding a Suitable Clinic or Specialist',
+                details: '<b>Details:</b><br/> The patient seeks out a healthcare provider, which could be a general practitioner, a nephrologist, or a specialized clinic like the University Clinic of Cologne for further evaluation. <br/><br/> <b>Decisions:</b><br/> <b>1. General Practitioner vs. Clinical Specialist:</b> The decision may depend on the severity of symptoms, accessibility, or prior medical advice.<br/> <b>2. Researching and Selecting a Clinic:</b> Patients might research or get referrals to find a clinic that specializes in kidney diseases or specifically in ADPKD.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        {
+            id: '0.3',
+            position: { x: 20, y: 250 },
+            type: 'defaultNode',
+            parentNode: "0",
+            data: {
+                label: 'Making an Appointment',
+                details: '<b>Details:</b><br/> Once a suitable healthcare provider is identified, the patient or their caregivers make an appointment for an initial consultation.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        }
+    ];
+
+    const phase_0_Edges = [
+        { id: 'e0.1-0.2', animated:true, source: '0.1', zIndex:999, target: '0.2', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
+        { id: 'e0.2-0.3', animated:true, source: '0.2', zIndex:999, target: '0.3', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
+        { id: 'e0.3-1.0', animated:false, source: '0.3', zIndex:999, target: '1.1.1', type:'startEndEdge', data: { startLabel: '1-30 days' },markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffff68' } }
+    ];
+
+    // Phase 1
+    const phase_1_Nodes = [
+    // Initial Clinic Visit
+        {
+            id: '1',
+            position: { x: 50, y: 420 },
+            type: 'groupNode',
+            data: { 
+            label: 'Initial Clinic Visit',
+            },
+            style: { background: '#00ddff7c',  width: 265, height: 670, color:"#ffffff" }
+        },
+        {
+            id: '1.1',
+            position: { x: 20, y: 50 },
+            type: 'groupNode',
+            parentNode: "1",
+            data: {
+                label: 'Patient Arrival and Registration',
+                details: '<b>Details:</b><br/> Upon arriving at the clinic, the patient undergoes a standard registration process, providing personal and medical information.'
+            },
+            style: { background: '#31d1eac0', color:"#ffffff",  width: 225, height: 250 }
+        },
+        {
+            id: '1.1.1',
+            position: { x: 20, y: 70 },
+            type: 'defaultNode',
+            parentNode: "1.1",
+            data: {
+                label: 'Medical History Documentation',
+                details: '<b>Details:</b><br/> Gathering detailed information about the patient’s medical history, focusing on symptoms that might indicate ADPKD.'
+            },
+            style: { background: '#e8e8e8' }
+        },
+        {
+            id: '1.1.2',
+            position: { x: 20, y: 180 },
+            type: 'defaultNode',
+            parentNode: "1.1",
+            data: {
+                label: 'Symptom Identification',
+                details: '<b>Details:</b><br/> Clinicians note any ADPKD-related symptoms reported by the patient.'
+            },
+            style: { background: '#e8e8e8' }
+        },
+        {
+            id: '1.2',
+            position: { x: 20, y: 330 },
+            type: 'groupNode',
+            parentNode: "1",
+            data: {
+                label: 'Initial Assessment by Healthcare Professional'
+            },
+            style: { background: '#64969ec0', color:"#ffffff",  width: 225, height: 300 }
+        },
+        {
+            id: '1.2.1',
+            position: { x: 20, y: 80 },
+            type: 'defaultNode',
+            parentNode: "1.2",
+            data: {
+                label: 'Physical Examination',
+                details: '<b>Details:</b><br/> A healthcare professional conducts a comprehensive physical examination, including checking blood pressure and examining for physical signs indicating kidney issues.'
+            },
+            style: { background: '#e8e8e8' }
+        },
+        {
+            id: '1.2.2',
+            position: { x: 20, y: 160 },
+            type: 'defaultNode',
+            parentNode: "1.2",
+            data: {
+                label: 'Family History Review',
+                details: '<b>Details:</b><br/> Evaluation of the patient’s family medical history, particularly looking for a genetic predisposition to ADPKD.'
+            },
+            style: { background: '#e8e8e8' }
+        },
+        {
+            id: '1.2.3',
+            position: { x: 20, y: 240 },
+            type: 'defaultNode',
+            parentNode: "1.2",
+            data: {
+                label: 'Consultation about Next Steps',
+                details: '<b>Details:</b><br/> Based on the prior assessment, the healthcare professional decides whether to proceed with further diagnostic tests and informs the patient about the recommended steps.'
+            },
+            style: { background: '#e8e8e8' }
+        },
+    ]
+
+    const phase_1_Edges = [
+        { id: 'e1.1.1-1.1.2', animated:true, source: '1.1.1', zIndex:999, target: '1.1.2', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
+        { id: 'e1.1.2-1.2.1', animated:false, source: '1.1.2', zIndex:999, target: '1.2.1', type:'startEndEdge', data: { startLabel: '0-2h' },markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffff68' } },
+        { id: 'e1.2.1-1.2.2', animated:true, source: '1.2.1', zIndex:999, target: '1.2.2', label: '1-2 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
+        { id: 'e1.2.2-1.2.3', animated:true, source: '1.2.2', zIndex:999, target: '1.2.3', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } }
+    ];
+
+    const minimalJourneyNodes = [...phase_0_Nodes, ...phase_1_Nodes]
+    const minimalJourneyEdges = [...phase_0_Edges, ...phase_1_Edges]
+
+    const [nodes, setNodes, onNodesChange] = useNodesState(minimalJourneyNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(minimalJourneyEdges);
+
+    const onConnect = useCallback((connection) => {
+        setEdges((eds) => addEdge(connection, eds));
+    }, []);
+
+  return (
+    <div style={{ width: '100%', height: '50vh' }}>
+      <ReactFlow 
+        nodes={minimalJourneyNodes} 
+        edges={minimalJourneyEdges} 
+        nodeTypes={{ defaultNode: DefaultNode, groupNode: GroupNode }}
+        edgeTypes={{ semiCircular: SemiCircularEdge, startEndEdge: StartEndEdge }}
+        fitView
+      >
+        <Controls />
+        <Background color="#aaa" gap={80} />
+      </ReactFlow>
+    </div>
+  );
+};
+
+
+<Flow />
+
+<Grid container spacing={4} margin="0em 0em">
+  <Grid xs={12} sm={12} margin="1em 1em">
+    #### Pre-Clinic Process
+    1) Recognizing the Need for Medical Attention
+        - **Description**: The patient, their family members or the family doctor recognize symptoms that may be associated with kidney issues, such as pain in the back or sides, changes in urine output, or hypertension.
+    2) Finding a Suitable Clinic or Specialist
+        - **Description**: The patient seeks out a healthcare provider, which could be a general practitioner, a nephrologist, or a specialized clinic like the University Clinic of Cologne for further evaluation.
+        - Key Decision points:
+            1. General Practitioner vs. Clinical Specialist: The decision may depend on the severity of symptoms, accessibility, or prior medical advice.
+            2. Researching and Selecting a Clinic: Patients might research or get referrals to find a clinic that specializes in kidney diseases or specifically in ADPKD.
+        - **Considerations**: Accessibility, insurance coverage, and the reputation of the healthcare provider can influence this decision.
+    3) Making an Appointment
+        - **Description**: Once a suitable healthcare provider is identified, the patient or their caregivers make an appointment for an initial consultation.
+        - **Considerations**: The urgency of the symptoms can influence how quickly an appointment is sought.
+
+    #### Initial Clinic Visit
+    1) Patient Arrival and Registration
+        - Process: Upon arriving at the clinic, the patient undergoes a standard registration process, providing personal and medical information.
+        - Medical History Documentation: Gathering detailed information about the patient’s medical history, focusing on symptoms that might indicate ADPKD.
+        - Symptom Identification: Clinicians note any ADPKD-related symptoms reported by the patient.
+        - **Importance**: Early detection and risk assessment (Chapman et al., 2015).
+    2) Initial Assessment by Healthcare Professional
+        - Physical Examination: A healthcare professional conducts a comprehensive physical examination, including checking blood pressure and examining for physical signs indicating kidney issues.
+        - Family History Review: Evaluation of the patient’s family medical history, particularly looking for a genetic predisposition to ADPKD.
+        - Determining Next Steps: Based on this assessment, the healthcare professional decides whether to proceed with further diagnostic tests.
+        - **Consideration**: Early clinical assessment crucial (Chapman et al., 2015).
+
+    #### Diagnostic Process
+    3) Laboratory Tests
+        - Renal and liver function tests; urine analysis.
+        - Options: Advanced genetic testing based on initial results.
+        - **Research**: Kidney function markers in ADPKD progression (Müller, R. U., & Benzing, T., 2018).
+    4) Imaging Studies
+        - Standard renal ultrasound; MRI or CT for detailed imaging.
+        - MRI preferred in cases with impaired renal function.
+        - **Study**: Imaging modalities in ADPKD (Pei et al., 2015).
+    5) Genetic Counseling and Testing (if indicated)
+        - Offered to assess risk in family members.
+        - Genetic testing confirms diagnosis and aids in family planning.
+        - **Impact**: Genetic counseling in patient management (Audrézet et al., 2016).
+
+    #### Treatment Decision
+    6) Consultation with Nephrologist
+        - Discussion of diagnostic results and kidney function evaluation.
+    7) Treatment Planning
+        - Personalized treatment based on kidney disease stage and patient health.
+        - **Approach**: Personalized treatment plans crucial (Chebib & Torres, 2016).
+  </Grid>
+  <Grid xs={12} sm={12} margin="1em 1em">
+    #### Treatment Implementation
+    8) Management of Hypertension
+        - Antihypertensive medication and lifestyle changes.
+        - First-line treatments: ACE inhibitors or ARBs.
+        - **Role**: Blood pressure control in ADPKD progression (Schrier et al., 2014).
+    9) Symptom Management
+        - Strategies for pain management and infection treatment.
+        - Options: Analgesics or surgical interventions for severe pain.
+        - Focus: Effective symptom management strategies (Casteleijn et al., 2014).
+    10) Lifestyle Modifications
+        - Dietary changes, reduced salt intake, and increased water consumption.
+        - More details on ADPKD supporting factors: [ADPKD Supporting Factors](http://localhost:3000/nephrology/adpkd-factors)
+    11) Medications Specific to ADPKD
+        - Use of Tolvaptan under specific criteria.
+        - Monitoring for side effects, especially liver function.
+        - **Consideration**: Tolvaptan's role in ADPKD (Torres et al., 2017 & Müller et al., 2023).
+    12) Regular Monitoring
+        - Ongoing kidney function tests and imaging studies.
+        - **Innovation**: AI-supported progression monitoring based on kidney volume (Jung et al. 2023).
+
+    #### Advanced Care (if required)
+    13) Management of Kidney Failure
+        - Dialysis options and kidney transplant evaluation.
+    14) Ongoing Support and Counseling
+        - Psychological support and education about disease progression.
+    15) Follow-up Visits
+        - Regular nephrologist check-ups for treatment monitoring and adjustments.
+  </Grid>
+</Grid>

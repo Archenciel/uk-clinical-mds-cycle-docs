@@ -5,5 +5,9 @@
     "adpkd-process-model":{
         "display": "normal",
         "title":"ADPKD Process Overview"
+    },
+    "adpkd-full-patient-journey":{
+        "display": "normal",
+        "title":"ADPKD Patient Journey (extended)"
     }
 }

@@ -1,31 +1,33 @@
-export const SemiCircularEdge = ({
+import React from 'react';
+import ReactFlow, { Background } from 'reactflow';
+import 'reactflow/dist/style.css';
+import ReactDOM from 'react-dom';
+import { Handle, Position, MiniMap, MarkerType } from 'reactflow';
+
+
+
+export default function SemiCircularEdge({
   id,
   sourceX,
   sourceY,
-  targetX,
-  targetY,
-  sourcePosition,
-  targetPosition,
-  sourceNode,
-  targetNode,
+  label,
   style = {},
-  arrowHeadType,
   markerEndId,
-}) => {
-  // Adjust these values based on your node's dimensions and desired edge appearance
-  const nodeWidth = 180; // Approximate width of the node
-  const radius = 50; // Radius of the semi-circle
+}){
+  // Define the radius of the small circle and label styles
+  const circleRadius = 18;
+  const fontSize = 12;
+  const padding = 2; // Padding around text inside the rectangle
 
-  // Calculate the starting point (left-middle of the node)
-  const startX = sourceX - nodeWidth / 2;
-  const startY = sourceY;
+  // Adjust these for label positioning
+  const labelX = sourceX - 60;
+  const labelWidth = 80; // Maximum width of the label
 
-  // Define the path for a semi-circle on the left side of the node
-  const path = `
-    M ${startX} ${startY}
-    A ${radius} ${radius} 0 1 1 ${startX} ${startY + radius * 2}
-    A ${radius} ${radius} 0 1 1 ${startX} ${startY}
-  `;
+  // SVG path for a small circle
+  const path = `M ${sourceX} ${sourceY}
+                m -${circleRadius}, 0
+                a ${circleRadius},${circleRadius} 0 1,0 ${circleRadius * 2},0
+                a ${circleRadius},${circleRadius} 0 1,0 -${circleRadius * 2},0`;
 
   return (
     <g>
@@ -36,7 +38,29 @@ export const SemiCircularEdge = ({
         d={path}
         markerEnd={markerEndId}
       />
-      {/* Additional elements */}
+      <foreignObject
+        x={labelX - labelWidth / 2}
+        y={sourceY - fontSize - padding * 2}
+        width={labelWidth}
+        height="100" // Initial height, will expand as needed
+      >
+        <div
+          xmlns="http://www.w3.org/1999/xhtml"
+          style={{
+            background: 'white',
+            color: 'black',
+            textAlign: 'center',
+            fontSize: `${fontSize}px`,
+            padding: `${padding}px`,
+            borderRadius: '5px',
+            maxWidth: `${labelWidth}px`,
+            overflowWrap: 'break-word', // Wrap long words
+            wordWrap: 'break-word', // Older browsers
+          }}
+        >
+          {label}
+        </div>
+      </foreignObject>
     </g>
   );
 };
