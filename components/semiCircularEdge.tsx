@@ -45,7 +45,6 @@ export default function SemiCircularEdge({
         height="100" // Initial height, will expand as needed
       >
         <div
-          xmlns="http://www.w3.org/1999/xhtml"
           style={{
             background: 'white',
             color: 'black',
