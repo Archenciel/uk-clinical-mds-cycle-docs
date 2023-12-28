@@ -58,7 +58,7 @@ export default function GroupNode ({ data }){
         {/* Left handles */}
         <Handle
             type="source"
-            position="left"
+            position={Position.Left}
             id="left1"
             style={{ top: '50%', visibility:"hidden" }}  
         />
