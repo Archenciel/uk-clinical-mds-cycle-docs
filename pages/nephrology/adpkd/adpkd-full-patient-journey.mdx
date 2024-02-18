@@ -22,14 +22,34 @@ export const Flow = () => {
     const phase_0_Nodes = [
     // Pre-Clinic Process
         {
+            id: 'title-1',
+            position: { x: 0, y: -10 },
+            type: 'groupNode',
+            data: { 
+            label: 'Clinical Domain',
+            details: '<div> <b>Details:</b><br/> Clinical view on the Patient Journey.</div>'
+            },
+            style: { background: '#004461ff', color:"#ffffff",  width: 800, height: 40 }
+        },
+        {
+            id: 'title-2',
+            position: { x: 800, y: -10 },
+            type: 'groupNode',
+            data: { 
+            label: 'Data Domain',
+            details: '<div> <b>Details:</b><br/> Data view on the Patient Journey.</div>'
+            },
+            style: { background: '#00300aff', color:"#ffffff",  width: 800, height: 40 }
+        },
+        {
             id: '0',
-            position: { x: 50, y: 50 },
+            position: { x: 290, y: 50 },
             type: 'groupNode',
             data: { 
             label: 'Pre-Clinical Process',
             details: '<div> <b>Details:</b><br/> Patient provides personal and medical history, symptoms related to ADPKD. </div>'
             },
-            style: { background: '#dbdbdbc1', color:"#000000",  width: 225, height: 320 }
+            style: { background: '#dbdbdbc1', color:"#000000",  width: 220, height: 320 }
         },
         {
             id: '0.1',
@@ -77,12 +97,12 @@ export const Flow = () => {
     // Initial Clinic Visit
         {
             id: '1',
-            position: { x: 50, y: 420 },
+            position: { x: 270, y: 420 },
             type: 'groupNode',
             data: { 
             label: 'Initial Clinic Visit',
             },
-            style: { background: '#00ddff7c',  width: 265, height: 670, color:"#ffffff" }
+            style: { background: '#00ddff7c',  width: 260, height: 670, color:"#ffffff" }
         },
         {
             id: '1.1',
@@ -93,7 +113,7 @@ export const Flow = () => {
                 label: 'Patient Arrival and Registration',
                 details: '<b>Details:</b><br/> Upon arriving at the clinic, the patient undergoes a standard registration process, providing personal and medical information.'
             },
-            style: { background: '#31d1eac0', color:"#ffffff",  width: 225, height: 250 }
+            style: { background: '#31d1eac0', color:"#ffffff",  width: 220, height: 250 }
         },
         {
             id: '1.1.1',
@@ -125,7 +145,7 @@ export const Flow = () => {
             data: {
                 label: 'Initial Assessment by Healthcare Professional'
             },
-            style: { background: '#64969ec0', color:"#ffffff",  width: 225, height: 300 }
+            style: { background: '#64969ec0', color:"#ffffff",  width: 225, height: 320 }
         },
         {
             id: '1.2.1',
@@ -169,8 +189,116 @@ export const Flow = () => {
         { id: 'e1.2.2-1.2.3', animated:true, source: '1.2.2', zIndex:999, target: '1.2.3', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } }
     ];
 
-    const minimalJourneyNodes = [...phase_0_Nodes, ...phase_1_Nodes]
-    const minimalJourneyEdges = [...phase_0_Edges, ...phase_1_Edges]
+  // Phase 2
+    const phase_2_Nodes = [
+    // Diagnostic Process for ADPKD
+        {
+            id: '2',
+            position: { x: 140, y: 1120 },
+            type: 'groupNode',
+            data: { 
+            label: 'Diagnostic Process',
+            },
+            style: { background: '#00a6ff7c',  width: 520, height: 320, color:"#ffffff" }
+        },
+        {
+            id: '2.1',
+            position: { x: 20, y: 50 },
+            type: 'defaultNode',
+            parentNode: "2",
+            data: {
+                label: 'Laboratory Tests',
+                details: '<b>Details:</b><br/> Conduct blood and urine tests to assess kidney function and signs of damage. Early detection of renal impairment, electrolyte imbalances, and proteinuria. <br/></br><b>Decision Factors</b>:<br/> The choice of specific tests (e.g., serum creatinine, GFR estimation, urine albumin-to-creatinine ratio) is guided by initial assessment findings.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '2.2',
+            position: { x: 170, y: 120 },
+            type: 'defaultNode',
+            parentNode: "2",
+            data: {
+                label: 'Imaging Studies',
+                details: '<b>Details:</b><br/>  Perform ultrasound as the first-line imaging modality to detect cysts in the kidneys. MRI or CT scans may be used for further assessment if needed. Key Considerations: Ultrasound is non-invasive and widely available, making it suitable for initial screening. MRI or CT provides more detailed imaging, useful in complex cases.'
+            },
+            style: { background: '#f9bcbc' }
+        },
+        {
+            id: '2.3',
+            position: { x: 320, y: 190 },
+            type: 'defaultNode',
+            parentNode: "2",
+            data: {
+                label: 'Genetic Testing',
+                details: '<b>Details:</b><br/> Offered to patients with a family history of ADPKD or when imaging is inconclusive. Helps in confirming the diagnosis, especially in atypical cases or early-stage disease.'
+            },
+            style: { background: '#e8e8e8' }
+        },
+        {
+            id: '2.4',
+            position: { x: 170, y: 260 },
+            type: 'defaultNode',
+            parentNode: "2",
+            data: {
+                label: 'Diagnosis Conclusion',
+                details: '<b>Details:</b><br/> Combining data from laboratory tests, imaging studies, and genetic testing to form a comprehensive picture of the patient’s condition. Ensuring the patient understands their condition, the implications of the diagnostic findings, and the rationale behind proposed treatment options.'
+            },
+            style: { background: '#e8e8e8' }
+        }
+    ]
+
+    const phase_2_Edges = [
+        { id: 'e1.2.3-2.1', animated:true, source: '1.2.3', zIndex:999, target: '2.1', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
+        { id: 'e1.2.3-2.2', animated:true, source: '1.2.3', zIndex:999, target: '2.2', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
+        { id: 'e1.2.3-2.3', animated:true, source: '1.2.3', zIndex:999, target: '2.3', label:'optional', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
+        { id: 'e2.1-2.4', animated:true, source: '2.1', zIndex:999, target: '2.4', label: '1-3 days', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
+        { id: 'e2.2-2.4', animated:true, source: '2.2', zIndex:999, target: '2.4', label: '1-2 days', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
+        { id: 'e2.3-2.4', animated:true, source: '2.3', zIndex:999, target: '2.4', label: '2-12 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } }
+    ];
+
+
+  // Phase 3
+    const phase_3_Nodes = [
+    // Treatment Decision and Consultation Process
+        {
+            id: '3',
+            position: { x: 140, y: 1500 },
+            type: 'groupNode',
+            data: { 
+            label: 'Diagnostic Process',
+            },
+            style: { background: '#00c8ff7c',  width: 520, height: 320, color:"#ffffff" }
+        },
+        {
+            id: '3.1',
+            position: { x: 20, y: 50 },
+            type: 'defaultNode',
+            parentNode: "3",
+            data: {
+                label: 'Laboratory Tests',
+                details: '<b>Details:</b><br/> Conduct blood and urine tests to assess kidney function and signs of damage. Early detection of renal impairment, electrolyte imbalances, and proteinuria. <br/></br><b>Decision Factors</b>:<br/> The choice of specific tests (e.g., serum creatinine, GFR estimation, urine albumin-to-creatinine ratio) is guided by initial assessment findings.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '3.2',
+            position: { x: 20, y: 120 },
+            type: 'defaultNode',
+            parentNode: "3",
+            data: {
+                label: 'Laboratory Tests',
+                details: '<b>Details:</b><br/> Conduct blood and urine tests to assess kidney function and signs of damage. Early detection of renal impairment, electrolyte imbalances, and proteinuria. <br/></br><b>Decision Factors</b>:<br/> The choice of specific tests (e.g., serum creatinine, GFR estimation, urine albumin-to-creatinine ratio) is guided by initial assessment findings.'
+            },
+            style: { background: '#e8e8e8'}
+        }
+    ]
+
+    const phase_3_Edges = [
+        { id: 'e2.4-3.1', animated:true, source: '2.4', zIndex:999, target: '3.1', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
+        { id: 'e3.1-3.2', animated:true, source: '3.1', zIndex:999, target: '3.2', label: '2-12 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } }
+    ];
+    const minimalJourneyNodes = [...phase_0_Nodes, ...phase_1_Nodes, ...phase_2_Nodes, ...phase_3_Nodes]
+    const minimalJourneyEdges = [...phase_0_Edges, ...phase_1_Edges, ...phase_2_Edges, ...phase_3_Edges]
 
     const [nodes, setNodes, onNodesChange] = useNodesState(minimalJourneyNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(minimalJourneyEdges);
