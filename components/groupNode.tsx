@@ -52,13 +52,13 @@ export default function GroupNode({ data }) {
                 textAlign: "left",
                 top: `${detailBoxPosition.top}px`,
                 left: `${detailBoxPosition.left}px`,
-                background: "black",
+                background: "#ffffffe7",
                 border: "1px solid black",
                 maxWidth: "500px",
                 padding: "5px 10px",
-                borderRadius: "5px",
+                borderRadius: "2px",
                 zIndex: 5000,
-                color: "#ffff",
+                color: "black",
               }}
               dangerouslySetInnerHTML={{ __html: data.details }}
             />,

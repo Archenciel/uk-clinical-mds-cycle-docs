@@ -4,7 +4,32 @@ import UnderConstruction from '../../../components/underConstruction';
 
 <UnderConstruction/>
 
-## Patient Journey
+## Patient Journey: Clinical- and Data Domain
+
+Our approach on integrating a "Data" level into the clinical process for ADPKD treatment builds upon systematically mapping out data sources, content, usage, and challenges throughout each step of the patient journey. 
+This approach not only covers the enrichment of the clinical decision-making process but all types of enhancements in patient care through informed insights. 
+
+#### Data Domain Overview
+| Index | Data Source                            | Contents                                                                                       | Relevance                                                                                                                         | Sources at UK-Cologne                               |
+|-------|----------------------------------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
+| 1     | Patient-Generated Health Data (PGHD)   | Symptoms journal, family medical history, lifestyle factors, medication adherence records      | Early identification of symptoms, impact of lifestyle, tracking side effects                                                      | Patient portals, mobile health apps                 |
+| 2     | Electronic Health Records (EHR)        | Medical history, clinical notes, lab results, imaging studies, genetic tests, treatment plans  | Comprehensive health overview, diagnostic data, treatment responses                                                                | Hospital Information System (HIS)                    |
+| 3     | Imaging Databases                      | Ultrasound, MRI, CT scan images and reports                                                    | Diagnosis confirmation, disease staging, cyst monitoring                                                                          | Radiology Department                                |
+| 4     | Laboratory Information Systems (LIS)   | Blood and urine test results (renal function, liver function, proteinuria, hematuria)          | Initial diagnosis, kidney function monitoring, complication detection                                                             | On-site Clinical Laboratories                       |
+| 5     | Genetic Testing Reports                | Genetic test results identifying ADPKD mutations                                                | Confirmatory diagnosis, family screening, prognostic information                                                                  | Genetic Counseling Services                         |
+| 6     | Pharmacy Records                       | Prescribed medications, dosages, refill history                                                 | Medication management, adherence tracking, drug interactions                                                                      | Hospital Pharmacy                                   |
+| 7     | Insurance Claims Databases             | Treatment claims, procedure codes, cost data                                                    | Economic impact of ADPKD treatment, care delivery patterns                                                                         | Administration and Billing Department               |
+| 8     | Clinical Trial Databases               | Data on clinical trials, investigational treatments, efficacy, safety outcomes                   | Potential new treatments, emerging research findings                                                                              | Research and Development Department                 |
+| 9     | Patient Registries                     | Data from ADPKD patients including demographics, treatment patterns, outcomes                    | Disease patterns, long-term outcomes, treatment effectiveness                                                                     | Nephrology Department Registry                      |
+| 10    | NHANES                                 | Epidemiological data on kidney disease prevalence, risk factors, health outcomes                | Population-level trends, risk factors related to ADPKD                                                                            | Public Health Department (External Source)          |
+| 11    | Social Media and Online Forums         | Patient experiences, treatment reviews, quality of life discussions                              | Patient-reported outcomes, peer support, patient education                                                                        | Online Patient Support Groups (External Source)     |
+| 12    | Health and Wellness Apps               | Health tracking data, blood pressure readings, dietary intake, exercise                           | Lifestyle management, correlations between activities and disease progression or management                                       | Mobile Health Applications (External Source)        |
+
+<br/>
+<Divider style={{marginBottom:"1em"}}/>
+#### Interactive Process Model
+<br/>
+
 import React, {useCallback} from 'react';
 import ReactFlow, { Background } from 'reactflow';
 import 'reactflow/dist/style.css';
@@ -23,23 +48,23 @@ export const Flow = () => {
     // Pre-Clinic Process
         {
             id: 'title-1',
-            position: { x: 0, y: -10 },
+            position: { x: 0, y: 0 },
             type: 'groupNode',
             data: { 
             label: 'Clinical Domain',
-            details: '<div> <b>Details:</b><br/> Clinical view on the Patient Journey.</div>'
+            details: '<div> Clinical view on the Patient Journey.</div>'
             },
-            style: { background: '#004461ff', color:"#ffffff",  width: 800, height: 40 }
+            style: { background: '#77c6e8ff', color:"#000000ff",  width: 800, height: 40 }
         },
         {
             id: 'title-2',
-            position: { x: 800, y: -10 },
+            position: { x: 800, y: 0 },
             type: 'groupNode',
             data: { 
             label: 'Data Domain',
-            details: '<div> <b>Details:</b><br/> Data view on the Patient Journey.</div>'
+            details: '<div>Data view on the Patient Journey.</div>'
             },
-            style: { background: '#00300aff', color:"#ffffff",  width: 800, height: 40 }
+            style: { background: '#61c577ff', color:"#000000ff",  width: 800, height: 40 }
         },
         {
             id: '0',
@@ -49,7 +74,7 @@ export const Flow = () => {
             label: 'Pre-Clinical Process',
             details: '<div> <b>Details:</b><br/> Patient provides personal and medical history, symptoms related to ADPKD. </div>'
             },
-            style: { background: '#dbdbdbc1', color:"#000000",  width: 220, height: 320 }
+            style: { background: '#86ffedc1', color:"#000000ff",  width: 220, height: 320 }
         },
         {
             id: '0.1',
@@ -87,9 +112,9 @@ export const Flow = () => {
     ];
 
     const phase_0_Edges = [
-        { id: 'e0.1-0.2', animated:true, source: '0.1', zIndex:999, target: '0.2', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
-        { id: 'e0.2-0.3', animated:true, source: '0.2', zIndex:999, target: '0.3', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
-        { id: 'e0.3-1.0', animated:false, source: '0.3', zIndex:999, target: '1.1.1', type:'startEndEdge', data: { startLabel: '1-30 days' },markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffff68' } }
+        { id: 'e0.1-0.2', animated:true, source: '0.1', zIndex:999, target: '0.2', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e0.2-0.3', animated:true, source: '0.2', zIndex:999, target: '0.3', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e0.3-1.0', animated:true, source: '0.3', zIndex:999, target: '1.1.1', type:'startEndEdge', data: { startLabel: '1-30 days' },markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000051' } }
     ];
 
     // Phase 1
@@ -102,7 +127,7 @@ export const Flow = () => {
             data: { 
             label: 'Initial Clinic Visit',
             },
-            style: { background: '#00ddff7c',  width: 260, height: 670, color:"#ffffff" }
+            style: { background: '#00ddff7c',  width: 260, height: 670, color:"#000000ff" }
         },
         {
             id: '1.1',
@@ -113,7 +138,7 @@ export const Flow = () => {
                 label: 'Patient Arrival and Registration',
                 details: '<b>Details:</b><br/> Upon arriving at the clinic, the patient undergoes a standard registration process, providing personal and medical information.'
             },
-            style: { background: '#31d1eac0', color:"#ffffff",  width: 220, height: 250 }
+            style: { background: '#31d1eac0', color:"#000000ff",  width: 220, height: 250 }
         },
         {
             id: '1.1.1',
@@ -145,7 +170,7 @@ export const Flow = () => {
             data: {
                 label: 'Initial Assessment by Healthcare Professional'
             },
-            style: { background: '#64969ec0', color:"#ffffff",  width: 225, height: 320 }
+            style: { background: '#64969ec0', color:"#000000ff",  width: 225, height: 320 }
         },
         {
             id: '1.2.1',
@@ -183,10 +208,10 @@ export const Flow = () => {
     ]
 
     const phase_1_Edges = [
-        { id: 'e1.1.1-1.1.2', animated:true, source: '1.1.1', zIndex:999, target: '1.1.2', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
-        { id: 'e1.1.2-1.2.1', animated:false, source: '1.1.2', zIndex:999, target: '1.2.1', type:'startEndEdge', data: { startLabel: '0-2h' },markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffff68' } },
-        { id: 'e1.2.1-1.2.2', animated:true, source: '1.2.1', zIndex:999, target: '1.2.2', label: '1-2 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
-        { id: 'e1.2.2-1.2.3', animated:true, source: '1.2.2', zIndex:999, target: '1.2.3', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } }
+        { id: 'e1.1.1-1.1.2', animated:true, source: '1.1.1', zIndex:999, target: '1.1.2', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e1.1.2-1.2.1', animated:true, source: '1.1.2', zIndex:999, target: '1.2.1', type:'startEndEdge', data: { startLabel: '0-2h' },markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e1.2.1-1.2.2', animated:true, source: '1.2.1', zIndex:999, target: '1.2.2', label: '1-2 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e1.2.2-1.2.3', animated:true, source: '1.2.2', zIndex:999, target: '1.2.3', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } }
     ];
 
   // Phase 2
@@ -199,7 +224,7 @@ export const Flow = () => {
             data: { 
             label: 'Diagnostic Process',
             },
-            style: { background: '#00a6ff7c',  width: 520, height: 320, color:"#ffffff" }
+            style: { background: '#00a6ff7c',  width: 520, height: 320, color:"#000000ff" }
         },
         {
             id: '2.1',
@@ -219,7 +244,7 @@ export const Flow = () => {
             parentNode: "2",
             data: {
                 label: 'Imaging Studies',
-                details: '<b>Details:</b><br/>  Perform ultrasound as the first-line imaging modality to detect cysts in the kidneys. MRI or CT scans may be used for further assessment if needed. Key Considerations: Ultrasound is non-invasive and widely available, making it suitable for initial screening. MRI or CT provides more detailed imaging, useful in complex cases.'
+                details: '<b>Details:</b><br/> Perform ultrasound as the first-line imaging modality to detect cysts in the kidneys. MRI or CT scans may be used for further assessment if needed. <b><br/><br/> Key Considerations:</b><br/>  Ultrasound is non-invasive and widely available, making it suitable for initial screening. MRI or CT provides more detailed imaging, useful in complex cases.'
             },
             style: { background: '#f9bcbc' }
         },
@@ -248,57 +273,241 @@ export const Flow = () => {
     ]
 
     const phase_2_Edges = [
-        { id: 'e1.2.3-2.1', animated:true, source: '1.2.3', zIndex:999, target: '2.1', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
-        { id: 'e1.2.3-2.2', animated:true, source: '1.2.3', zIndex:999, target: '2.2', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
-        { id: 'e1.2.3-2.3', animated:true, source: '1.2.3', zIndex:999, target: '2.3', label:'optional', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
-        { id: 'e2.1-2.4', animated:true, source: '2.1', zIndex:999, target: '2.4', label: '1-3 days', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
-        { id: 'e2.2-2.4', animated:true, source: '2.2', zIndex:999, target: '2.4', label: '1-2 days', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
-        { id: 'e2.3-2.4', animated:true, source: '2.3', zIndex:999, target: '2.4', label: '2-12 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } }
+        { id: 'e1.2.3-2.1', animated:true, source: '1.2.3', zIndex:999, target: '2.1', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e1.2.3-2.2', animated:true, source: '1.2.3', zIndex:999, target: '2.2', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e1.2.3-2.3', animated:true, source: '1.2.3', zIndex:999, target: '2.3', label:'optional', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e2.1-2.4', animated:true, source: '2.1', zIndex:999, target: '2.4', label: '1-3 days', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e2.2-2.4', animated:true, source: '2.2', zIndex:999, target: '2.4', label: '1-2 days', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e2.3-2.4', animated:true, source: '2.3', zIndex:999, target: '2.4', label: '2-12 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } }
     ];
 
 
-  // Phase 3
+    // Phase 3
     const phase_3_Nodes = [
     // Treatment Decision and Consultation Process
         {
             id: '3',
-            position: { x: 140, y: 1500 },
+            position: { x: 270, y: 1500 },
             type: 'groupNode',
             data: { 
-            label: 'Diagnostic Process',
+            label: 'Treatment Decision and Consultation Process',
             },
-            style: { background: '#00c8ff7c',  width: 520, height: 320, color:"#ffffff" }
+            style: { background: '#00c8ff7c',  width: 260, height: 350, color:"#000000ff" }
         },
         {
             id: '3.1',
-            position: { x: 20, y: 50 },
+            position: { x: 40, y: 70 },
             type: 'defaultNode',
             parentNode: "3",
             data: {
-                label: 'Laboratory Tests',
-                details: '<b>Details:</b><br/> Conduct blood and urine tests to assess kidney function and signs of damage. Early detection of renal impairment, electrolyte imbalances, and proteinuria. <br/></br><b>Decision Factors</b>:<br/> The choice of specific tests (e.g., serum creatinine, GFR estimation, urine albumin-to-creatinine ratio) is guided by initial assessment findings.'
+                label: 'Evaluation of Disease Severity',
+                details: '<b>Details:</b><br/> Assess the severity of ADPKD based on kidney function, size and number of cysts, hypertension, and other complications. Key Considerations: Kidney function (eGFR), hypertension management, and presence of complications such as pain or urinary infections.'
             },
             style: { background: '#e8e8e8'}
         },
         {
             id: '3.2',
-            position: { x: 20, y: 120 },
+            position: { x: 40, y: 170 },
             type: 'defaultNode',
             parentNode: "3",
             data: {
-                label: 'Laboratory Tests',
-                details: '<b>Details:</b><br/> Conduct blood and urine tests to assess kidney function and signs of damage. Early detection of renal impairment, electrolyte imbalances, and proteinuria. <br/></br><b>Decision Factors</b>:<br/> The choice of specific tests (e.g., serum creatinine, GFR estimation, urine albumin-to-creatinine ratio) is guided by initial assessment findings.'
+                label: 'Discussion of Treatment Options',
+                details: '<b>Details:</b><br/> Engage in a detailed discussion with the patient about possible treatment options, including conservative management, pharmacological interventions, and, in advanced stages, considerations for dialysis or transplantation. Key Considerations: Patient’s lifestyle, potential side effects of treatments, and preferences. Decision Factors: Based on disease severity, patients quality of life considerations, and potential for disease progression.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '3.3',
+            position: { x: 40, y: 270 },
+            type: 'defaultNode',
+            parentNode: "3",
+            data: {
+                label: 'Pharmacological Treatments Decision',
+                details: '<b>Details:</b><br/>  Decide on specific medications, focusing on controlling hypertension (e.g., ACE inhibitors or ARBs) and, if applicable, prescribing tolvaptan to slow disease progression. Key Considerations: Tolvaptan is considered for certain patients based on disease severity, kidney function, and liver tests. Decision Factors: Eligibility for tolvaptan treatment, considering liver function and potential side effects.'
             },
             style: { background: '#e8e8e8'}
         }
     ]
 
     const phase_3_Edges = [
-        { id: 'e2.4-3.1', animated:true, source: '2.4', zIndex:999, target: '3.1', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } },
-        { id: 'e3.1-3.2', animated:true, source: '3.1', zIndex:999, target: '3.2', label: '2-12 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#ffffffa3"}, style: { stroke: '#ffffffa3' } }
+        { id: 'e2.4-3.1', animated:true, source: '2.4', zIndex:999, target: '3.1', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e3.1-3.2', animated:true, source: '3.1', zIndex:999, target: '3.2', label: '1-2 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e3.2-3.3', animated:true, source: '3.2', zIndex:999, target: '3.3', label: '1-3 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+       
     ];
-    const minimalJourneyNodes = [...phase_0_Nodes, ...phase_1_Nodes, ...phase_2_Nodes, ...phase_3_Nodes]
-    const minimalJourneyEdges = [...phase_0_Edges, ...phase_1_Edges, ...phase_2_Edges, ...phase_3_Edges]
+
+    // Phase 4
+    const phase_4_Nodes = [
+    // Treatment Decision and Consultation Process
+        {
+            id: '4',
+            position: { x: 140, y: 1880 },
+            type: 'groupNode',
+            data: { 
+            label: 'Treatment Implementation Process',
+            },
+            style: { background: '#25e9d97c',  width: 520, height: 800, color:"#000000ff" }
+        },
+        {
+            id: '4.1',
+            position: { x: 40, y: 70 },
+            type: 'defaultNode',
+            parentNode: "4",
+            data: {
+                label: 'Lifestyle Modifications and Supportive Care',
+                details: '<b>Details:</b><br/> Implement lifestyle changes and supportive care measures to manage symptoms and slow progression. <br/><br/><b>Key Considerations:<br/></b> Dietary adjustments, increased water intake, and pain management. <br/><br/><b>Decision Factors:<br/></b> Tailored to patient needs and capabilities, considering the impact on quality of life.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '4.2',
+            position: { x: 300, y: 70 },
+            type: 'defaultNode',
+            parentNode: "4",
+            data: {
+                label: 'Pharmacological Treatments',
+                details: '<b>Details:</b><br/> Engage in a detailed discussion with the patient about possible treatment options, including conservative management, pharmacological interventions, and, in advanced stages, considerations for dialysis or transplantation. <br/><br/><b>Key Considerations:<br/></b> Patient’s lifestyle, potential side effects of treatments, and preferences. <br/><br/><b>Decision Factors:<br/></b> Based on disease severity, patients quality of life considerations, and potential for disease progression.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '4.3',
+            position: { x: 170, y: 170 },
+            type: 'defaultNode',
+            parentNode: "4",
+            data: {
+                label: 'Regular Monitoring',
+                details: '<b>Details:</b><br/> Ongoing kidney function tests and imaging studies.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '4.4',
+            position: { x: 20, y: 270 },
+            type: 'groupNode',
+            parentNode: "4",
+            data: {
+                label: 'Advanced Care',
+                details: '<b>Details:</b><br/>For patients in advanced stages, discuss dialysis options and evaluate the feasibility of kidney transplantation. <br/><br/><b>Key Considerations:<br/></b> Timing for dialysis initiation, eligibility and preparation for kidney transplantation. <br/><br/><b>Decision Factors:<br/></b> Based on declining kidney function, patients overall health, and transplant eligibility criteria.'
+            },
+           style: { background: '#85caf866',  width: 480, height: 510, color:"#000000ff" }
+        },
+        {
+            id: '4.4.1',
+            position: { x: 150, y: 50 },
+            type: 'defaultNode',
+            parentNode: "4.4",
+            data: {
+                label: 'Advanced Care Planning (if applicable)',
+                details: '<b>Details:</b><br/> For patients in advanced stages, discuss dialysis options and evaluate the feasibility of kidney transplantation. <br/><br/><b>Key Considerations:<br/></b> Timing for dialysis initiation, eligibility and preparation for kidney transplantation. <br/><br/><b>Decision Factors:<br/></b> Based on declining kidney function, patients overall health, and transplant eligibility criteria.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '4.4.2',
+            position: { x: 20, y: 150 },
+            type: 'defaultNode',
+            parentNode: "4.4",
+            data: {
+                label: 'Dialysy',
+                details: '<b>Options:<br/></b> <b>1. Hemodialysis:</b> Performed in a clinic or hospital setting, typically three times a week. <br/><b>2. Peritoneal Dialysis:</b> Can be done at home, offering more flexibility but requires daily treatment. <br/><br/><b>Impact:<br/></b> Dialysis can significantly extend life expectancy for patients with ESRD. However, the choice between hemodialysis and peritoneal dialysis depends on patient preference, lifestyle, and other health considerations.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '4.4.3',
+            position: { x: 280, y: 150 },
+            type: 'defaultNode',
+            parentNode: "4.4",
+            data: {
+                label: 'Kidney Transplantation',
+                details: '<b>Details:</b><br/> Evaluating eligibility for a kidney transplant, which involves receiving a healthy kidney from a living or deceased donor. <br/><br/><b>Impact:<br/></b> A successful kidney transplant can dramatically improve life expectancy and quality of life compared to dialysis. However, patients must meet specific health criteria to be eligible, and there may be a waiting period for a suitable donor. <br/><br/></b>Treatment, Not a Cure:</b><br/> Kidney transplantation addresses the kidney failure aspect of ADPKD but does not cure the underlying genetic condition. ADPKD patients still carry the gene that causes the disease, and cysts can potentially develop in other organs.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '4.4.4',
+            position: { x: 20, y: 250 },
+            type: 'defaultNode',
+            parentNode: "4.4",
+            data: {
+                label: 'Palliative Care',
+                details: '<b>Details:</b><br/> Specialized medical care aimed at providing relief from the symptoms and stress of serious illness, focusing on improving life quality for both the patient and the family. <br/><br/><b>Impact:<br/></b> Palliative care can be integrated at any stage of the disease but is particularly crucial in advanced care. It addresses physical, emotional, and spiritual needs, which can positively affect life expectancy by improving overall well-being.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '4.4.5',
+            position: { x: 20, y: 350 },
+            type: 'defaultNode',
+            parentNode: "4.4",
+            data: {
+                label: 'End-of-Life Care',
+                details: '<b>Details:</b><br/> A decision-making process where healthcare providers, in consultation with the patient and their family, recognize that the focus of care should shift from active treatment of the disease to palliative care, emphasizing comfort and quality of life. <br/><br/><b>Key Considerations:<br/></b> The timing for this transition involves recognizing when further active or aggressive treatments are no longer beneficial or in line with the patient’s wishes.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '4.4.6',
+            position: { x: 20, y: 450 },
+            type: 'defaultNode',
+            parentNode: "4.4",
+            data: {
+                label: 'Hospice Care',
+                details: '<b>Details:</b><br/> For patients in the final months of life, hospice care provides specialized support for end-of-life care, often in the patients home but also available in hospice centers, hospitals, and nursing homes. <br/><br/><b>Key Considerations:<br/></b> Focuses on comfort and quality of life, with an interdisciplinary team approach to address the comprehensive needs of the patient and provide support to the family.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '4.4.7',
+            position: { x: 20, y: 550 },
+            type: 'defaultNode',
+            parentNode: "4.4",
+            data: {
+                label: 'Bereavement Support',
+                details: '<b>Details:</b><br/> After the patients death, providing ongoing support to help family members and loved ones cope with the loss. <br/><br/><b>Key Considerations:<br/></b> Bereavement services can include counseling, support groups, and resources to assist with the grieving process.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+        {
+            id: '4.4.8',
+            position: { x: 280, y: 250 },
+            type: 'defaultNode',
+            parentNode: "4.4",
+            data: {
+                label: 'Post Transplantation Care',
+                details: '<b>Details:</b><br/> Post-transplant, patients require close monitoring to ensure the new kidney is functioning correctly and to detect any signs of rejection. Patients must take immunosuppressive medications for the rest of their lives to prevent the body from rejecting the new organ. These medications come with their side effects and necessitate regular monitoring. <br/><br/><b>Follow-up:</b><br/> Regular follow-ups with the healthcare team are critical to manage any complications, adjust medications, and monitor kidney function. Advances in transplantation medicine have significantly improved long-term outcomes, making it less common for patients to return to dialysis soon after receiving a transplant. <br/><br/><b>Monitoring for Complications:</b><br/> Long-term, transplant recipients need to be monitored for complications of immunosuppression, including infections and an increased risk of certain cancers. There’s also a need to monitor for any signs of ADPKD affecting other organs.'
+            },
+            style: { background: '#e8e8e8'}
+        },
+    ]
+
+    const phase_4_Edges = [
+        { id: 'e3.3-4.1', animated:true, source: '3.3', zIndex:999, target: '4.1', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e3.3-4.2', animated:true, source: '3.3', zIndex:999, target: '4.2', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e4.1-4.3', animated:true, source: '4.1', zIndex:999, target: '4.3', label: 'regular', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e4.2-4.3', animated:true, source: '4.2', zIndex:999, target: '4.3', label: 'regular', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e4.3-4.4.1', animated:true, source: '4.3', zIndex:999, target: '4.4.1', type:'startEndEdge', data: { startLabel: 'years (progression triggered)' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e4.4.1-4.4.2', animated:true, source: '4.4.1', zIndex:999, target: '4.4.2', label: '(?) 1-2 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e4.4.1-4.4.3', animated:true, source: '4.4.1', zIndex:999, target: '4.4.3', label: '~8 years', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e4.4.2-4.4.3', animated:true, source: '4.4.2', zIndex:999, target: '4.4.3', label: '~8 years', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e4.4.2-4.4.4', animated:true, source: '4.4.2', zIndex:999, target: '4.4.4', label: 'progression triggered', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e4.4.3-4.4.8', animated:true, source: '4.4.3', zIndex:999, target: '4.4.8', label: 'post-surgery', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e4.4.4-4.4.5', animated:true, source: '4.4.4', zIndex:999, target: '4.4.5', label: 'progression triggered', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e4.4.5-4.4.6', animated:true, source: '4.4.5', zIndex:999, target: '4.4.6', label: 'progression triggered', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e4.4.6-4.4.7', animated:true, source: '4.4.6', zIndex:999, target: '4.4.7', label: 'post-mortem', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e4.4.8-4.4.2', animated:true, source: '4.4.8', zIndex:999, target: '4.4.2', label: 'on failure', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+        { id: 'e4.4.8-4.4.4', animated:true, source: '4.4.8', zIndex:999, target: '4.4.4', label: 'on failure', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
+    ];
+
+    const cyclic_Edges = [
+        // Cyclic edges for ongoing steps
+    { id: 'cyclic-1', source: '4.4.2', target: '4.4.2', type: 'custom',  zIndex:1, sourceHandle: 'left1', targetHandle: 'left2', data:"left", type: 'semiCircular', label: 'Recurring Treatment', arrowHeadType: 'arrowclosed', style: { strokeDasharray: '5,5', stroke: '#00000065', zIndex:999999 }, animated: true },
+     { id: 'cyclic-2', source: '4.4.8', target: '4.4.8', type: 'custom',  zIndex:1, sourceHandle: 'right1', targetHandle: 'right2', data:"right", type: 'semiCircular', label: 'Ongoing process', arrowHeadType: 'arrowclosed', style: { strokeDasharray: '5,5', stroke: '#00000065', zIndex:999999 }, animated: true },
+    ];
+
+    const minimalJourneyNodes = [...phase_0_Nodes, ...phase_1_Nodes, ...phase_2_Nodes, ...phase_3_Nodes, ...phase_4_Nodes]
+    const minimalJourneyEdges = [...phase_0_Edges, ...phase_1_Edges, ...phase_2_Edges, ...phase_3_Edges, ...phase_4_Edges, ...cyclic_Edges]
 
     const [nodes, setNodes, onNodesChange] = useNodesState(minimalJourneyNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(minimalJourneyEdges);
@@ -314,7 +523,7 @@ export const Flow = () => {
         edges={minimalJourneyEdges} 
         nodeTypes={{ defaultNode: DefaultNode, groupNode: GroupNode }}
         edgeTypes={{ semiCircular: SemiCircularEdge, startEndEdge: StartEndEdge }}
-        fitView
+        
       >
         <Controls />
         <Background color="#aaa" gap={80} />
@@ -325,6 +534,8 @@ export const Flow = () => {
 
 
 <Flow />
+
+<Divider style={{marginTop:"1em"}}/>
 
 <Grid container spacing={4} margin="0em 0em">
   <Grid xs={12} sm={12} margin="1em 1em">

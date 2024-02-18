@@ -1,10 +1,8 @@
-import React from 'react';
-import ReactFlow, { Background } from 'reactflow';
-import 'reactflow/dist/style.css';
-import ReactDOM from 'react-dom';
-import { Handle, Position, MiniMap, MarkerType } from 'reactflow';
-
-
+import React from "react";
+import ReactFlow, { Background } from "reactflow";
+import "reactflow/dist/style.css";
+import ReactDOM from "react-dom";
+import { Handle, Position, MiniMap, MarkerType } from "reactflow";
 
 export default function SemiCircularEdge({
   id,
@@ -13,14 +11,15 @@ export default function SemiCircularEdge({
   label,
   style = {},
   markerEndId,
-}){
+  data,
+}) {
   // Define the radius of the small circle and label styles
   const circleRadius = 18;
   const fontSize = 12;
   const padding = 2; // Padding around text inside the rectangle
 
   // Adjust these for label positioning
-  const labelX = sourceX - 60;
+  const labelX = data === "right" ? sourceX + 60 : sourceX - 60;
   const labelWidth = 80; // Maximum width of the label
 
   // SVG path for a small circle
@@ -30,7 +29,7 @@ export default function SemiCircularEdge({
                 a ${circleRadius},${circleRadius} 0 1,0 -${circleRadius * 2},0`;
 
   return (
-    <g>
+    <g style={{ zIndex: 1 }}>
       <path
         id={id}
         style={style}
@@ -43,18 +42,20 @@ export default function SemiCircularEdge({
         y={sourceY - fontSize - padding * 2}
         width={labelWidth}
         height="100" // Initial height, will expand as needed
+        style={{ zIndex: 1 }}
       >
         <div
           style={{
-            background: 'white',
-            color: 'black',
-            textAlign: 'center',
+            background: "white",
+            color: "black",
+            textAlign: "center",
             fontSize: `${fontSize}px`,
             padding: `${padding}px`,
-            borderRadius: '5px',
+            borderRadius: "5px",
             maxWidth: `${labelWidth}px`,
-            overflowWrap: 'break-word', // Wrap long words
-            wordWrap: 'break-word', // Older browsers
+            overflowWrap: "break-word", // Wrap long words
+            wordWrap: "break-word", // Older browsers
+            zIndex: 1,
           }}
         >
           {label}
@@ -62,4 +63,4 @@ export default function SemiCircularEdge({
       </foreignObject>
     </g>
   );
-};
+}
