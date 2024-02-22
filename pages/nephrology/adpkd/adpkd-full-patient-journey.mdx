@@ -9,39 +9,210 @@ import UnderConstruction from '../../../components/underConstruction';
 Our approach on integrating a "Data" level into the clinical process for ADPKD treatment builds upon systematically mapping out data sources, content, usage, and challenges throughout each step of the patient journey. 
 This approach not only covers the enrichment of the clinical decision-making process but all types of enhancements in patient care through informed insights. 
 
-#### Data Domain Overview
-| Index | Data Source                            | Contents                                                                                       | Relevance                                                                                                                         | Sources at UK-Cologne                               |
-|-------|----------------------------------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
-| 1     | Patient-Generated Health Data (PGHD)   | Symptoms journal, family medical history, lifestyle factors, medication adherence records      | Early identification of symptoms, impact of lifestyle, tracking side effects                                                      | Patient portals, mobile health apps                 |
-| 2     | Electronic Health Records (EHR)        | Medical history, clinical notes, lab results, imaging studies, genetic tests, treatment plans  | Comprehensive health overview, diagnostic data, treatment responses                                                                | Hospital Information System (HIS)                    |
-| 3     | Imaging Databases                      | Ultrasound, MRI, CT scan images and reports                                                    | Diagnosis confirmation, disease staging, cyst monitoring                                                                          | Radiology Department                                |
-| 4     | Laboratory Information Systems (LIS)   | Blood and urine test results (renal function, liver function, proteinuria, hematuria)          | Initial diagnosis, kidney function monitoring, complication detection                                                             | On-site Clinical Laboratories                       |
-| 5     | Genetic Testing Reports                | Genetic test results identifying ADPKD mutations                                                | Confirmatory diagnosis, family screening, prognostic information                                                                  | Genetic Counseling Services                         |
-| 6     | Pharmacy Records                       | Prescribed medications, dosages, refill history                                                 | Medication management, adherence tracking, drug interactions                                                                      | Hospital Pharmacy                                   |
-| 7     | Insurance Claims Databases             | Treatment claims, procedure codes, cost data                                                    | Economic impact of ADPKD treatment, care delivery patterns                                                                         | Administration and Billing Department               |
-| 8     | Clinical Trial Databases               | Data on clinical trials, investigational treatments, efficacy, safety outcomes                   | Potential new treatments, emerging research findings                                                                              | Research and Development Department                 |
-| 9     | Patient Registries                     | Data from ADPKD patients including demographics, treatment patterns, outcomes                    | Disease patterns, long-term outcomes, treatment effectiveness                                                                     | Nephrology Department Registry                      |
-| 10    | NHANES                                 | Epidemiological data on kidney disease prevalence, risk factors, health outcomes                | Population-level trends, risk factors related to ADPKD                                                                            | Public Health Department (External Source)          |
-| 11    | Social Media and Online Forums         | Patient experiences, treatment reviews, quality of life discussions                              | Patient-reported outcomes, peer support, patient education                                                                        | Online Patient Support Groups (External Source)     |
-| 12    | Health and Wellness Apps               | Health tracking data, blood pressure readings, dietary intake, exercise                           | Lifestyle management, correlations between activities and disease progression or management                                       | Mobile Health Applications (External Source)        |
-
 <br/>
 <Divider style={{marginBottom:"1em"}}/>
 #### Interactive Process Model
 <br/>
 
-import React, {useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import ReactFlow, { Background } from 'reactflow';
 import 'reactflow/dist/style.css';
 import ReactDOM from 'react-dom';
 import { Handle, Position, MiniMap, MarkerType, Controls, useNodesState,useEdgesState, addEdge, addNode } from 'reactflow';
 
 import DefaultNode from '../../../components/defaultNode'
+import RightLeftNode from '../../../components/rightLeftNode'
 import GroupNode from '../../../components/groupNode'
 import SemiCircularEdge from '../../../components/semiCircularEdge'
 import StartEndEdge from '../../../components/startEndEdge';
 
+import { applyEdgeChanges, applyNodeChanges } from 'reactflow';
+
 export const Flow = () => {
+
+    // Data sources
+    const data_Nodes = [
+        {
+            id: 'publicData',
+            position: { x: 1300, y: 50 },
+            type: 'groupNode',
+            data: { 
+                label: 'Public Data',
+                details: '<div> <b>Details:</b><br/>Public health databases, epidemiological surveys, and online patient forums provide insights into ADPKD prevalence, patient experiences, and societal impacts.</div>'
+            },
+            style: { background: '#89f64ac1', color:"#000000ff",  width: 220, height: 420 }
+        },
+        {
+            id: 'healthcareProviderData',
+            position: { x: 1300, y: 520 },
+            type: 'groupNode',
+            data: {
+                label: 'Healthcare Provider Data',
+                details: '<div> <b>Details:</b><br/>Data from EHRs, imaging studies, and lab tests offer comprehensive insights into patient health status and treatment outcomes.</div>'
+            },
+            style: { background: '#89c4fa', color:"#000000ff", width: 220, height: 620 }
+        },
+        {
+            id: 'researchClinicalData',
+            position: { x: 1300, y: 1200 },
+            type: 'groupNode',
+            data: {
+                label: 'Research and Clinical Data',
+                details: '<div> <b>Details:</b><br/>Clinical trial databases and patient registries help in understanding the efficacy of treatments and long-term disease patterns.</div>'
+            },
+            style: { background: '#fa89b3', color:"#000000ff", width: 220, height: 320 }
+        },
+        {
+            id: 'externalSources',
+            position: { x: 1300, y: 1580 },
+            type: 'groupNode',
+            data: {
+                label: 'External Sources',
+                details: '<div> <b>Details:</b><br/>Insurance claims databases and health and wellness apps provide economic data and support lifestyle management for ADPKD patients.</div>'
+            },
+            style: { background: '#f4fa89', color:"#000000ff", width: 220, height: 420 }
+        },
+        // Data Source Nodes
+        // Public Data
+        {
+            id: 'NHANES',
+            position: { x: 20, y: 50 },
+            type: 'rightLeftNode',
+            parentNode: "publicData",
+            data: {
+                label: 'EHIS, NHANES, GEDA & DEGS',
+                details: '<b>Contents:</b><br/>Epidemiological data on kidney disease prevalence, risk factors, and health outcomes.<br/><br/><b>Relevance:</b><br/>Population-level trends and risk factors related to ADPKD.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        // Healthcare Provider Data
+        {
+            id: 'EHR',
+            position: { x: 20, y: 50 },
+            type: 'rightLeftNode',
+            parentNode: "healthcareProviderData",
+            data: {
+                label: 'Electronic Health Records (EHR)',
+                details: '<b>Contents:</b><br/>Medical history, clinical notes, lab results, imaging studies, genetic tests, treatment plans.<br/><br/><b>Relevance:</b><br/>Comprehensive health overview, diagnostic data, treatment responses.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        {
+            id: 'imagingDatabases',
+            position: { x: 20, y: 150 },
+            type: 'rightLeftNode',
+            parentNode: "healthcareProviderData",
+            data: {
+                label: 'Imaging Databases',
+                details: '<b>Contents:</b><br/>Ultrasound, MRI, CT scan images and reports.<br/><br/><b>Relevance:</b><br/>Diagnosis confirmation, disease staging, cyst monitoring.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        {
+            id: 'laboratoryInformationSystems',
+            position: { x: 20, y: 250 },
+            type: 'rightLeftNode',
+            parentNode: "healthcareProviderData",
+            data: {
+                label: 'Laboratory Information Systems (LIS)',
+                details: '<b>Contents:</b><br/>Blood and urine test results (renal function, liver function, proteinuria, hematuria).<br/><br/><b>Relevance:</b><br/>Initial diagnosis, kidney function monitoring, complication detection.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        {
+            id: 'pharmacyRecords',
+            position: { x: 20, y: 350 },
+            type: 'rightLeftNode',
+            parentNode: "healthcareProviderData",
+            data: {
+                label: 'Pharmacy Records',
+                details: '<b>Contents:</b><br/>Prescribed medications, dosages, refill history.<br/><br/><b>Relevance:</b><br/>Medication management, adherence tracking, drug interactions.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        {
+            id: 'geneticTestingReports',
+            position: { x: 20, y: 450 },
+            type: 'rightLeftNode',
+            parentNode: "healthcareProviderData",
+            data: {
+                label: 'Genetic Testing Reports',
+                details: '<b>Contents:</b><br/>Genetic test results identifying ADPKD mutations.<br/><br/><b>Relevance:</b><br/>Confirmatory diagnosis, family screening, prognostic information.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        // Research and Clinical Data
+        {
+            id: 'clinicalTrialDatabases',
+            position: { x: 20, y: 50 },
+            type: 'rightLeftNode',
+            parentNode: "researchClinicalData",
+            data: {
+                label: 'Clinical Trial Databases',
+                details: '<b>Contents:</b><br/>Data on clinical trials, investigational treatments, efficacy, safety outcomes.<br/><br/><b>Relevance:</b><br/>Potential new treatments, emerging research findings.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        {
+            id: 'patientRegistries',
+            position: { x: 20, y: 150 },
+            type: 'rightLeftNode',
+            parentNode: "researchClinicalData",
+            data: {
+                label: 'Patient Registries',
+                details: '<b>Contents:</b><br/>Data from ADPKD patients including demographics, treatment patterns, outcomes.<br/><br/><b>Relevance:</b><br/>Disease patterns, long-term outcomes, treatment effectiveness.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        // External Sources
+        {
+            id: 'healthWellnessApps',
+            position: { x: 20, y: 50 },
+            type: 'rightLeftNode',
+            parentNode: "externalSources",
+            data: {
+                label: 'Health and Wellness Apps',
+                details: '<b>Contents:</b><br/>Health tracking data, blood pressure readings, dietary intake, exercise.<br/><br/><b>Relevance:</b><br/>Lifestyle management, correlations between activities and disease progression or management.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        {
+            id: 'insuranceClaimsDatabases',
+            position: { x: 20, y: 150 },
+            type: 'rightLeftNode',
+            parentNode: "externalSources",
+            data: {
+                label: 'Insurance Claims Databases',
+                details: '<b>Contents:</b><br/>Treatment claims, procedure codes, cost data.<br/><br/><b>Relevance:</b><br/>Economic impact of ADPKD treatment, care delivery patterns.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+        {
+            id: 'socialMediaOnlineForums',
+            position: { x: 20, y: 250 },
+            type: 'rightLeftNode',
+            parentNode: "externalSources",
+            data: {
+                label: 'Social Media and Online Forums',
+                details: '<b>Contents:</b><br/>Patient and caregiver experiences, treatment reviews, quality of life discussions.<br/><br/><b>Relevance:</b><br/>Insights into patient-reported outcomes, peer support, patient education.'
+            },
+            style: { background: '#e8e8e8', color:"#ffffff" }
+        },
+    ];
+
+    const data_Edges = [
+        { id: 'EHR-0.1i', animated:true, source: 'EHR', type: 'custom', targetHandle: 'right2', zIndex:999, target: '0.1i', label: 'patient data', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'PGHD-0.1i', animated: true, source: 'NHANES', target: '0.1i', label: 'PGHD', labelStyle: { fill: "white" }, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065" }, style: { stroke: '#00000065' } },
+        { id: 'PatientRegistries-0.1i', animated: true, source: 'patientRegistries', target: '0.1i', label: 'Patient Registries', labelStyle: { fill: "white" }, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065" }, style: { stroke: '#00000065' } },
+        // Smart Clinic and Specialist Navigator edges
+        { id: 'HealthcareProviderDirectories-0.2i', animated: true, source: 'EHR', target: '0.2i', label: 'Provider Directories', labelStyle: { fill: "white" }, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065" }, style: { stroke: '#00000065' } },
+        { id: 'InsuranceProviderDatabases-0.2i', animated: true, source: 'insuranceClaimsDatabases', target: '0.2i', label: 'Insurance Data', labelStyle: { fill: "white" }, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065" }, style: { stroke: '#00000065' } },
+        { id: 'OnlinePatientFeedback-0.2i', animated: true, source: 'socialMediaOnlineForums', target: '0.2i', label: 'Patient Feedback', labelStyle: { fill: "white" }, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065" }, style: { stroke: '#00000065' } },
+        // Instant Appointment Scheduler edges
+        { id: 'ProviderSchedules-0.3i', animated: true, source: 'EHR', target: '0.3i', label: 'Provider Schedules', labelStyle: { fill: "white" }, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065" }, style: { stroke: '#00000065' } },
+        { id: 'PatientInsuranceInfo-0.3i', animated: true, source: 'insuranceClaimsDatabases', target: '0.3i', label: 'Insurance Info', labelStyle: { fill: "white" }, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065" }, style: { stroke: '#00000065' } },
+    ];
+
 
     // Phase 0
     const phase_0_Nodes = [
@@ -64,7 +235,7 @@ export const Flow = () => {
             label: 'Data Domain',
             details: '<div>Data view on the Patient Journey.</div>'
             },
-            style: { background: '#61c577ff', color:"#000000ff",  width: 800, height: 40 }
+            style: { background: '#80f89aff', color:"#000000ff",  width: 800, height: 40 }
         },
         {
             id: '0',
@@ -81,6 +252,8 @@ export const Flow = () => {
             position: { x: 20, y: 50 },
             type: 'defaultNode',
             parentNode: "0",
+            draggable: true,
+            selectable: true,
             data: {
                 label: 'Recognizing the Need for Medical Attention',
                 details: '<b>Details:</b><br/> The patient, their family members or the family doctor recognize symptoms that may be associated with kidney issues, such as pain in the back or sides, changes in urine output, or hypertension.'
@@ -110,11 +283,62 @@ export const Flow = () => {
             style: { background: '#e8e8e8', color:"#ffffff" }
         }
     ];
-
     const phase_0_Edges = [
         { id: 'e0.1-0.2', animated:true, source: '0.1', zIndex:999, target: '0.2', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
         { id: 'e0.2-0.3', animated:true, source: '0.2', zIndex:999, target: '0.3', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
         { id: 'e0.3-1.0', animated:true, source: '0.3', zIndex:999, target: '1.1.1', type:'startEndEdge', data: { startLabel: '1-30 days' },markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000051' } }
+    ];
+    const phase_0_Innovation_Nodes = [
+    // Pre-Clinic Process
+        {
+            id: '0i',
+            position: { x: 840, y: 50 },
+            type: 'groupNode',
+            data: { 
+            label: 'Pre-Clinical Innovations',
+            details: '<div> <b>Details:</b><br/> Data-driven innovations that can enhance or improve the pre-clinical process. Those fall outside of the clinical scope in most cases. </div>'
+            },
+            style: { background: '#b7f5cec1', color:"#000000ff",  width: 220, height: 320 }
+        },
+        {
+            "id": "0.1i",
+            "position": { "x": 20, "y": 70 },
+            "type": "rightLeftNode",
+            "parentNode": "0i",
+            "data": {
+                "label": "ADPKD Symptom and Risk Analyzer",
+                "details": "<b>Description:</b><br/>An AI-based tool that analyzes symptoms and family medical history against a database of ADPKD patient data to assess the probability of ADPKD.<br/><br/><b>Data Used:</b><br/>Patient-Generated Health Data (PGHD), Family Medical History, Electronic Health Records (EHR) of diagnosed ADPKD cases.<br/><br/><b>Potential Benefits:</b><br/>Early identification of at-risk individuals, streamlined referral process for further evaluation, increased awareness and education on ADPKD symptoms."
+            },
+            "style": { "background": "#77ff8b", "color":"#ffffff" }
+        },
+        {
+            "id": "0.2i",
+            "position": { "x": 20, "y": 150 },
+            "type": "rightLeftNode",
+            "parentNode": "0i",
+            "data": {
+                "label": "Smart Clinic and Specialist Navigator",
+                "details": "<b>Description:</b><br/>A platform that recommends suitable clinics or nephrology specialists based on patient location, symptom severity, and insurance information.<br/><br/><b>Data Used:</b><br/>Healthcare Provider Directories, Insurance Provider Databases, Online Patient Feedback, and Reviews.<br/><br/><b>Potential Benefits:</b><br/>Helps patients make informed decisions when selecting healthcare providers, reduces time to find specialized care, improves accessibility to nephrology services."
+            },
+            "style": { "background": "#77ff8b", "color":"#ffffff" }
+        },
+        {
+            "id": "0.3i",
+            "position": { "x": 20, "y": 230 },
+            "type": "rightLeftNode",
+            "parentNode": "0i",
+            "data": {
+                "label": "Instant Appointment Scheduler",
+                "details": "<b>Description:</b><br/>An automated system allowing patients to book initial consultations directly with healthcare providers, showing real-time availability.<br/><br/><b>Data Used:</b><br/>Healthcare provider schedules, patient insurance information, preferred appointment times.<br/><br/><b>Potential Benefits:</b><br/>Reduces delays in scheduling initial consultations, enhances patient experience through convenience, optimizes clinic schedules for efficiency."
+            },
+            "style": { "background": "#77ff8b", "color":"#ffffff" }
+        }
+
+    ];
+    const phase_0_Innovation_Edges = [
+        { id: 'e0.1i-0.1', animated:true, source: '0.1i', type: 'custom', targetHandle: 'right2', zIndex:999, target: '0.1', label: 'Help with diagnosis', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e0.2i-0.2', animated:true, source: '0.2i', targetHandle: 'right2', zIndex:999, target: '0.2', label: 'Support expert identification', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e0.3i-0.3', animated:true, source: '0.3i', targetHandle: 'right2',  zIndex:999, target: '0.3', label: 'Save time', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
     ];
 
     // Phase 1
@@ -206,13 +430,84 @@ export const Flow = () => {
             style: { background: '#e8e8e8' }
         },
     ]
-
     const phase_1_Edges = [
         { id: 'e1.1.1-1.1.2', animated:true, source: '1.1.1', zIndex:999, target: '1.1.2', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
         { id: 'e1.1.2-1.2.1', animated:true, source: '1.1.2', zIndex:999, target: '1.2.1', type:'startEndEdge', data: { startLabel: '0-2h' },markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
         { id: 'e1.2.1-1.2.2', animated:true, source: '1.2.1', zIndex:999, target: '1.2.2', label: '1-2 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
         { id: 'e1.2.2-1.2.3', animated:true, source: '1.2.2', zIndex:999, target: '1.2.3', label: 'Immediate', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } }
     ];
+    // Initial Clinic Visit Innovations
+    const phase_1_Innovation_Nodes = [
+        {
+            id: '1i',
+            position: { x: 840, y: 420 },
+            type: 'groupNode',
+            data: { 
+                label: 'Initial Clinic Visit Innovations',
+                details: '<div><b>Details:</b><br/>Data-driven innovations enhancing the initial clinic visit, focusing on patient intake, assessment, and planning.</div>'
+            },
+            style: { background: '#b7f5cec1', color:"#000000ff",  width: 220, height: 670 }
+        },
+        {
+            id: '1.1i',
+            position: { x: 20, y: 50 },
+            type: 'rightLeftNode',
+            parentNode: "1i",
+            data: {
+                label: 'Digital Patient Intake System',
+                details: "<b>Description:</b><br/>A digital platform for patients to fill out their registration and medical history before their appointment.<br/><br/><b>Data Used:</b><br/>Patient-Generated Health Data (PGHD), Electronic Health Records (EHR).<br/><br/><b>Potential Benefits:</b><br/>Streamlines the registration process, ensures accurate and comprehensive medical history documentation, reduces waiting times."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '1.2i',
+            position: { x: 20, y: 150 },
+            type: 'rightLeftNode',
+            parentNode: "1i",
+            data: {
+                label: 'Automated Symptom Pre-Screening',
+                details: "<b>Description:</b><br/>AI-driven tool that pre-screens patient-reported symptoms against known ADPKD indicators to prioritize urgent cases.<br/><br/><b>Data Used:</b><br/>Patient-Generated Health Data (PGHD), EHR, Clinical Guidelines.<br/><br/><b>Potential Benefits:</b><br/>Enhances early detection of potential ADPKD cases, optimizes clinic workflow, and ensures timely intervention."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '1.3i',
+            position: { x: 20, y: 250 },
+            type: 'rightLeftNode',
+            parentNode: "1i",
+            data: {
+                label: 'Family History Analysis Tool',
+                details: "<b>Description:</b><br/>Software that analyzes detailed family history provided by the patient to identify genetic predispositions to ADPKD.<br/><br/><b>Data Used:</b><br/>Family Medical History, Genetic Testing Reports.<br/><br/><b>Potential Benefits:</b><br/>Aids in risk stratification, informs personalized diagnostic and treatment plans, and supports genetic counseling."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '1.4i',
+            position: { x: 20, y: 350 },
+            type: 'rightLeftNode',
+            parentNode: "1i",
+            data: {
+                label: 'Next Steps Recommendation Engine',
+                details: "<b>Description:</b><br/>A decision-support system providing healthcare professionals with evidence-based recommendations for diagnostics or treatment based on the initial assessment.<br/><br/><b>Data Used:</b><br/>EHR, Clinical Guidelines, Diagnostic Test Results.<br/><br/><b>Potential Benefits:</b><br/>Ensures consistency in care, reduces decision fatigue, and customizes patient care plans."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        }
+    ];
+    const phase_1_Innovation_Edges = [
+        // Connecting Digital Patient Intake System with Patient Arrival and Registration
+        { id: 'e1.1i-1.1.1', animated: true, source: '1.1i', target: '1.1.1', zIndex:999, targetHandle: 'right2', label: 'Streamlines Registration', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#00000065' } },
+        
+        // Connecting Automated Symptom Pre-Screening with Initial Assessment by Healthcare Professional
+        { id: 'e1.2i-1.1.2', animated: true, source: '1.2i', target: '1.1.2', zIndex:999, targetHandle: 'right2', label: 'Enhances Early Detection', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#00000065' } },
+        { id: 'e1.2i-1.2.1', animated: true, source: '1.2i', target: '1.2.1', zIndex:999, targetHandle: 'right2', label: 'Enhances Early Detection', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#00000065' } },
+        
+        // Connecting Family History Analysis Tool with Family History Review
+        { id: 'e1.3i-1.2.2', animated: true, source: '1.3i', target: '1.2.2', zIndex:999, targetHandle: 'right2', label: 'Informs Risk Stratification', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#00000065' } },
+        
+        // Connecting Next Steps Recommendation Engine with Consultation about Next Steps
+        { id: 'e1.4i-1.2.3', animated: true, source: '1.4i', target: '1.2.3', zIndex:999, targetHandle: 'right2', label: 'Supports Decision-Making', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#00000065' } },
+    ];
+
 
   // Phase 2
     const phase_2_Nodes = [
@@ -271,7 +566,6 @@ export const Flow = () => {
             style: { background: '#e8e8e8' }
         }
     ]
-
     const phase_2_Edges = [
         { id: 'e1.2.3-2.1', animated:true, source: '1.2.3', zIndex:999, target: '2.1', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
         { id: 'e1.2.3-2.2', animated:true, source: '1.2.3', zIndex:999, target: '2.2', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
@@ -280,7 +574,69 @@ export const Flow = () => {
         { id: 'e2.2-2.4', animated:true, source: '2.2', zIndex:999, target: '2.4', label: '1-2 days', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
         { id: 'e2.3-2.4', animated:true, source: '2.3', zIndex:999, target: '2.4', label: '2-12 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } }
     ];
+    // Diagnostic Process Innovations
+    const phase_2_Innovation_Nodes = [
+        {
+            id: '2i',
+            position: { x: 840, y: 1120 },
+            type: 'groupNode',
+            data: { 
+                label: 'Diagnostic Process Innovations',
+                details: '<div><b>Details:</b><br/>Enhancing diagnostics with data-driven technologies for accurate and timely ADPKD identification.</div>'
+            },
+            style: { background: '#b7d5f4', color:"#000000ff",  width: 220, height: 320 }
+        },
+        {
+            id: '2.1i',
+            position: { x: 20, y: 70 },
+            type: 'rightLeftNode',
+            parentNode: "2i",
+            data: {
+                label: 'Automated Lab Analysis',
+                details: "<b>Description:</b><br/>Use AI to analyze laboratory test results in real-time, comparing against patterns indicative of ADPKD.<br/><br/><b>Data Used:</b><br/>Laboratory Information Systems (LIS), EHR.<br/><br/><b>Potential Benefits:</b><br/>Quickens the turnaround time for lab results, improves accuracy in early detection of renal impairment."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '2.2i',
+            position: { x: 20, y: 170 },
+            type: 'rightLeftNode',
+            parentNode: "2i",
+            data: {
+                label: 'Imaging AI Diagnostics',
+                details: "<b>Description:</b><br/>Leverage deep learning algorithms to interpret ultrasound and MRI/CT images for cyst detection and classification.<br/><br/><b>Data Used:</b><br/>Imaging Databases.<br/><br/><b>Potential Benefits:</b><br/>Enhances precision in identifying cysts characteristic of ADPKD, aids in early staging of the disease."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '2.3i',
+            position: { x: 20, y: 270 },
+            type: 'rightLeftNode',
+            parentNode: "2i",
+            data: {
+                label: 'Genetic Risk Profiling',
+                details: "<b>Description:</b><br/>A tool for analyzing genetic testing results to assess ADPKD risk based on known genetic markers.<br/><br/><b>Data Used:</b><br/>Genetic Testing Reports, Family Medical History.<br/><br/><b>Potential Benefits:</b><br/>Facilitates personalized risk assessment, informs patients and families about potential genetic predisposition."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        }
+    ];
+    const phase_2_Innovation_Edges = [
+        // Connecting Automated Lab Analysis with Laboratory Tests
+        { id: 'e2.1i-2.1', animated: true, source: '2.1i', target: '2.1', zIndex: 10, targetHandle: 'right2', label: 'Enhances Lab Test Analysis', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#4f4f4f', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#4f4f4f', strokeWidth: 1 } },
 
+        // Connecting Imaging AI Diagnostics with Imaging Studies
+        { id: 'e2.2i-2.2', animated: true, source: '2.2i', target: '2.2', zIndex: 20, targetHandle: 'right2', label: 'Improves Imaging Interpretation', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#5f5f5f', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#5f5f5f', strokeWidth: 1 } },
+
+        // Connecting Genetic Risk Profiling with Genetic Testing
+        { id: 'e2.3i-2.3', animated: true, source: '2.3i', target: '2.3', zIndex: 30, targetHandle: 'right2', label: 'Informs Genetic Risk', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#6f6f6f', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#6f6f6f', strokeWidth: 1 } },
+
+        // Additional edges if innovations affect multiple steps
+        { id: 'e2.1i-2.4', animated: true, source: '2.1i', target: '2.4', zIndex: 40, targetHandle: 'right2', label: 'Supports Diagnosis Conclusion', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#7f7f7f', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#7f7f7f', strokeWidth: 1 } },
+
+        { id: 'e2.2i-2.4', animated: true, source: '2.2i', target: '2.4', zIndex: 50, targetHandle: 'right2', label: 'Aids Diagnosis Conclusion', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#8f8f8f', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#8f8f8f', strokeWidth: 1 } },
+
+        { id: 'e2.3i-2.4', animated: true, source: '2.3i', target: '2.4', zIndex: 60, targetHandle: 'right2', label: 'Refines Diagnosis Conclusion', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#9f9f9f', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#9f9f9f', strokeWidth: 1 } },
+    ];
 
     // Phase 3
     const phase_3_Nodes = [
@@ -328,13 +684,69 @@ export const Flow = () => {
             style: { background: '#e8e8e8'}
         }
     ]
-
     const phase_3_Edges = [
         { id: 'e2.4-3.1', animated:true, source: '2.4', zIndex:999, target: '3.1', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
         { id: 'e3.1-3.2', animated:true, source: '3.1', zIndex:999, target: '3.2', label: '1-2 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
         { id: 'e3.2-3.3', animated:true, source: '3.2', zIndex:999, target: '3.3', label: '1-3 weeks', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
        
     ];
+    // Treatment Decision and Consultation Process Innovations
+    const phase_3_Innovation_Nodes = [
+        {
+            id: '3i',
+            position: { x: 840, y: 1500 },
+            type: 'groupNode',
+            data: { 
+                label: 'Treatment Decision Innovations',
+                details: '<div><b>Details:</b><br/>Innovations aimed at improving the treatment decision-making process, facilitating better patient consultations, and tailoring treatment plans to individual patient needs.</div>'
+            },
+            style: { background: '#b7d5f4', color:"#000000ff",  width: 220, height: 350 }
+        },
+        {
+            id: '3.1i',
+            position: { x: 20, y: 70 },
+            type: 'rightLeftNode',
+            parentNode: "3i",
+            data: {
+                label: 'Severity Analysis Tool',
+                details: "<b>Description:</b><br/>An advanced analytics tool that integrates patient data to assess ADPKD severity based on kidney function, cyst characteristics, and other clinical factors.<br/><br/><b>Data Used:</b><br/>EHR, Imaging Studies, Laboratory Tests.<br/><br/><b>Potential Benefits:</b><br/>Enables precise evaluation of disease severity, supporting personalized treatment decisions."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '3.2i',
+            position: { x: 20, y: 170 },
+            type: 'rightLeftNode',
+            parentNode: "3i",
+            data: {
+                label: 'Treatment Option Simulator',
+                details: "<b>Description:</b><br/>A simulation tool that presents potential outcomes of different treatment options based on current clinical guidelines and patient-specific factors.<br/><br/><b>Data Used:</b><br/>Clinical Guidelines, Patient-Reported Outcomes, Pharmacological Data.<br/><br/><b>Potential Benefits:</b><br/>Aids in discussing treatment options with patients, highlighting potential outcomes and side effects."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '3.3i',
+            position: { x: 20, y: 270 },
+            type: 'rightLeftNode',
+            parentNode: "3i",
+            data: {
+                label: 'Personalized Medicine Dashboard',
+                details: "<b>Description:</b><br/>Leverages genetic testing and patient health data to recommend pharmacological treatments, including eligibility for tolvaptan.<br/><br/><b>Data Used:</b><br/>Genetic Testing Reports, Laboratory Test Results, EHR.<br/><br/><b>Potential Benefits:</b><br/>Supports tailored pharmacological treatment decisions, optimizing efficacy and minimizing side effects."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        }
+    ];
+    const phase_3_Innovation_Edges = [
+        // Connecting Severity Analysis Tool with Evaluation of Disease Severity
+        { id: 'e3.1i-3.1', animated: true, source: '3.1i', target: '3.1', zIndex: 999, targetHandle: 'right2', label: 'Refines Severity Assessment', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#454545', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#454545' } },
+        
+        // Connecting Treatment Option Simulator with Discussion of Treatment Options
+        { id: 'e3.2i-3.2', animated: true, source: '3.2i', target: '3.2', zIndex: 999, targetHandle: 'right2', label: 'Visualizes Treatment Outcomes', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#565656', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#565656' } },
+
+        // Connecting Personalized Medicine Dashboard with Pharmacological Treatments Decision
+        { id: 'e3.3i-3.3', animated: true, source: '3.3i', target: '3.3', zIndex: 999, targetHandle: 'right2', label: 'Supports Medication Selection', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#676767', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#676767' } },
+    ];
+
 
     // Phase 4
     const phase_4_Nodes = [
@@ -481,7 +893,6 @@ export const Flow = () => {
             style: { background: '#e8e8e8'}
         },
     ]
-
     const phase_4_Edges = [
         { id: 'e3.3-4.1', animated:true, source: '3.3', zIndex:999, target: '4.1', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
         { id: 'e3.3-4.2', animated:true, source: '3.3', zIndex:999, target: '4.2', type:'startEndEdge', data: { startLabel: '1-3 days' }, labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' } },
@@ -499,18 +910,151 @@ export const Flow = () => {
         { id: 'e4.4.8-4.4.2', animated:true, source: '4.4.8', zIndex:999, target: '4.4.2', label: 'on failure', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
         { id: 'e4.4.8-4.4.4', animated:true, source: '4.4.8', zIndex:999, target: '4.4.4', label: 'on failure', labelStyle:{fill:"white"}, labelBgStyle: { fill: '#353535', fillOpacity: 0.9 }, markerEnd: { type:MarkerType.ArrowClosed, color:"#00000065"}, style: { stroke: '#00000065' }},
     ];
+    // Treatment Implementation Process Innovations
+    const phase_4_Innovation_Nodes = [
+        {
+            id: '4i',
+            position: { x: 840, y: 1880 },
+            type: 'groupNode',
+            data: { 
+                label: 'Treatment Implementation Innovations',
+                details: '<div><b>Details:</b><br/>Leveraging data-driven technologies to personalize treatment plans, monitor patient progress, and support decision-making throughout the treatment process.</div>'
+            },
+            style: { background: '#d4f8d8', color:"#000000ff",  width: 220, height: 800 }
+        },
+        {
+            id: '4.1i',
+            position: { x: 20, y: 70 },
+            type: 'rightLeftNode',
+            parentNode: "4i",
+            data: {
+                label: 'Lifestyle Management Platform',
+                details: "<b>Description:</b><br/>A comprehensive platform that provides patients with personalized lifestyle modification plans and tracks progress.<br/><br/><b>Data Used:</b><br/>Patient-Generated Health Data (PGHD), EHR, dietary and activity tracking apps.<br/><br/><b>Potential Benefits:</b><br/>Enhances patient adherence to lifestyle changes, supports symptom management, and potentially slows disease progression."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '4.2i',
+            position: { x: 20, y: 170 },
+            type: 'rightLeftNode',
+            parentNode: "4i",
+            data: {
+                label: 'Pharmacological Management System',
+                details: "<b>Description:</b><br/>An advanced system that assists in selecting and managing pharmacological treatments based on patient-specific data.<br/><br/><b>Data Used:</b><br/>EHR, Pharmacological Data, Genetic Testing Reports.<br/><br/><b>Potential Benefits:</b><br/>Optimizes medication selection, minimizes side effects, and enhances treatment efficacy through personalized therapy."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '4.3i',
+            position: { x: 20, y: 270 },
+            type: 'rightLeftNode',
+            parentNode: "4i",
+            data: {
+                label: 'Continuous Health Monitoring System',
+                details: "<b>Description:</b><br/>Utilizes wearable devices and remote monitoring tools to continuously track patient health metrics and adjust treatment plans in real-time.<br/><br/><b>Data Used:</b><br/>Wearable Device Data, Remote Patient Monitoring Systems, EHR.<br/><br/><b>Potential Benefits:</b><br/>Allows for timely adjustments to treatment, early detection of complications, and enhanced patient engagement in their care."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '4.4i',
+            position: { x: 20, y: 370 },
+            type: 'rightLeftNode',
+            parentNode: "4i",
+            data: {
+                label: 'Advanced Care Coordination Tool',
+                details: "<b>Description:</b><br/>A tool designed to streamline the coordination of advanced care options, including dialysis and transplantation, ensuring seamless transitions and comprehensive support.<br/><br/><b>Data Used:</b><br/>EHR, Dialysis and Transplantation Registries, Patient-Reported Outcome Measures.<br/><br/><b>Potential Benefits:</b><br/>Improves decision-making for advanced care, supports patient and family through complex care pathways, and enhances overall care coordination."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '4.5i',
+            position: { x: 20, y: 470 },
+            type: 'rightLeftNode',
+            parentNode: "4i",
+            data: {
+                label: 'Advanced Care Management Platform',
+                details: "<b>Description:</b><br/>A comprehensive platform designed to integrate data from various sources to support decision-making in advanced care planning, including dialysis management and transplantation readiness assessment.<br/><br/><b>Data Used:</b><br/>EHR, Dialysis Registries, Transplantation Registries, Patient-Reported Outcome Measures.<br/><br/><b>Potential Benefits:</b><br/>Facilitates a holistic approach to managing advanced ADPKD, ensuring timely and coordinated care transitions, optimizing patient outcomes, and supporting both patients and caregivers through complex care pathways."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '4.4.2i',
+            position: { x: 20, y: 570 },
+            type: 'rightLeftNode',
+            parentNode: "4i",
+            data: {
+                label: 'Dialysis Optimization Tool',
+                details: "<b>Description:</b><br/>Utilizes machine learning to analyze patient data and optimize dialysis schedules, modalities, and settings for each individual, aiming to maximize treatment effectiveness and patient quality of life.<br/><br/><b>Data Used:</b><br/>Dialysis session data, patient health records, wearable device data.<br/><br/><b>Potential Benefits:</b><br/>Improves dialysis efficacy, enhances patient comfort during treatment, and potentially reduces complications associated with dialysis."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '4.4.3i',
+            position: { x: 20, y: 670 },
+            type: 'rightLeftNode',
+            parentNode: "4i",
+            data: {
+                label: 'Transplantation Match Predictor',
+                details: "<b>Description:</b><br/>A predictive tool that analyses compatibility factors between potential donors and recipients to identify optimal matches, reducing waiting times for kidney transplantation.<br/><br/><b>Data Used:</b><br/>Genetic markers, immunological profiles, transplantation registries data.<br/><br/><b>Potential Benefits:</b><br/>Increases the success rate of transplantations, decreases patient waiting times, and improves long-term transplantation outcomes."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        },
+        {
+            id: '4.4.4i',
+            position: { x: 20, y: 770 },
+            type: 'rightLeftNode',
+            parentNode: "4i",
+            data: {
+                label: 'Palliative Care Coordination Tool',
+                details: "<b>Description:</b><br/>A digital platform that coordinates palliative care services, aligning them with the patient's needs and preferences, and facilitating communication among care teams and between patients and providers.<br/><br/><b>Data Used:</b><br/>Patient health records, palliative care protocols, patient and family preferences.<br/><br/><b>Potential Benefits:</b><br/>Ensures that palliative care is timely, personalized, and effective, improving the quality of life for patients in advanced stages of ADPKD."
+            },
+            style: { background: "#77ff8b", color:"#ffffff" }
+        }   
+    ];
+    const phase_4_Innovation_Edges = [
+        // Connecting Lifestyle Management Platform with Lifestyle Modifications and Supportive Care
+        { id: 'e4.1i-4.1', animated: true, source: '4.1i', target: '4.1',  type:'startEndEdge', data: { startLabel: 'Supports Lifestyle Changes' }, targetHandle: 'right2', labelBgStyle: { fill: '#525252', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#525252' } },
+        
+        // Connecting Pharmacological Management System with Pharmacological Treatments
+        { id: 'e4.2i-4.2', animated: true, source: '4.2i', target: '4.2', zIndex: 999, targetHandle: 'right2', label: 'Optimizes Pharmacological Care', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#636363', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#636363' } },
+
+        // Connecting Continuous Health Monitoring System with Regular Monitoring
+        { id: 'e4.3i-4.3', animated: true, source: '4.3i', target: '4.3', zIndex: 999, targetHandle: 'right2', label: 'Enhances Monitoring Efficiency', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#747474', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#74747498' } },
+
+        // Connecting Advanced Care Coordination Tool with Advanced Care
+        { id: 'e4.4i-4.4.1', animated: true, source: '4.4i', target: '4.4.1', zIndex: 1, targetHandle: 'right2', label: 'Facilitates Advanced Care Planning', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#858585', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#85858571' } },
+      
+      // Connecting Advanced Care Management Platform with Advanced Care Planning
+        { id: 'e4.5i-4.4.1', animated: true, source: '4.5i', target: '4.4.1', zIndex: 1, targetHandle: 'right2', label: 'Streamlines Advanced Care', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#505050', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#5050508f' } },
+
+        // Connecting Dialysis Optimization Tool with Dialysis
+        { id: 'e4.4.2i-4.4.2', animated: true, source: '4.4.2i', target: '4.4.2', zIndex: 1, targetHandle: 'right2', label: 'Optimizes Dialysis Treatment', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#606060', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#60606090' } },
+
+        // Connecting Transplantation Match Predictor with Kidney Transplantation
+        { id: 'e4.4.3i-4.4.3', animated: true, source: '4.4.3i', target: '4.4.3', zIndex: 1, targetHandle: 'right2', label: 'Enhances Transplant Matching', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#707070', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#70707092' } },
+
+        // Connecting Palliative Care Coordination Tool with Palliative Care
+        { id: 'e4.4.4i-4.4.4', animated: true, source: '4.4.4i', target: '4.4.4', zIndex: 1, targetHandle: 'right2', label: 'Coordinates Palliative Services', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#808080', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#8080808f' } },
+
+        // Additional edge for Palliative Care Coordination Tool potentially affecting End-of-Life Care
+        { id: 'e4.4.4i-4.4.5', animated: true, source: '4.4.4i', target: '4.4.5', zIndex: 1, targetHandle: 'right2', label: 'Supports End-of-Life Planning', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#909090', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#90909097' } },
+
+        // Edge for Hospice Care Integration from Palliative Care Coordination Tool
+        { id: 'e4.4.4i-4.4.6', animated: true, source: '4.4.4i', target: '4.4.6', zIndex: 1, targetHandle: 'right2', label: 'Integrates Hospice Care', labelStyle: {fill: "white"}, labelBgStyle: { fill: '#a0a0a0', fillOpacity: 0.9 }, markerEnd: { type: "arrowclosed", color: "#00000065"}, style: { stroke: '#a0a0a084' } }
+    ]
+
 
     const cyclic_Edges = [
         // Cyclic edges for ongoing steps
-    { id: 'cyclic-1', source: '4.4.2', target: '4.4.2', type: 'custom',  zIndex:1, sourceHandle: 'left1', targetHandle: 'left2', data:"left", type: 'semiCircular', label: 'Recurring Treatment', arrowHeadType: 'arrowclosed', style: { strokeDasharray: '5,5', stroke: '#00000065', zIndex:999999 }, animated: true },
-     { id: 'cyclic-2', source: '4.4.8', target: '4.4.8', type: 'custom',  zIndex:1, sourceHandle: 'right1', targetHandle: 'right2', data:"right", type: 'semiCircular', label: 'Ongoing process', arrowHeadType: 'arrowclosed', style: { strokeDasharray: '5,5', stroke: '#00000065', zIndex:999999 }, animated: true },
+    { id: 'cyclic-1', source: '4.4.2', target: '4.4.2', type: 'custom',  zIndex:1, sourceHandle: 'left1', targetHandle: 'left2', data:"left", type: 'semiCircular', label: 'Recurring Treatment', arrowHeadType: 'arrowclosed',labelBgStyle: { fill: '#636363', fillOpacity: 0.9 }, style: { strokeDasharray: '5,5', stroke: '#00000065', zIndex:999999 }, animated: true },
+     { id: 'cyclic-2', source: '4.4.8', target: '4.4.8', type: 'custom',  zIndex:1, sourceHandle: 'right1', targetHandle: 'right2', data:"right", type: 'semiCircular', label: 'Ongoing process', arrowHeadType: 'arrowclosed',labelBgStyle: { fill: '#636363', fillOpacity: 0.9 }, style: { strokeDasharray: '5,5', stroke: '#00000065', zIndex:999999 }, animated: true },
     ];
 
-    const minimalJourneyNodes = [...phase_0_Nodes, ...phase_1_Nodes, ...phase_2_Nodes, ...phase_3_Nodes, ...phase_4_Nodes]
-    const minimalJourneyEdges = [...phase_0_Edges, ...phase_1_Edges, ...phase_2_Edges, ...phase_3_Edges, ...phase_4_Edges, ...cyclic_Edges]
+    const IntegratedViewNodes = [...phase_0_Nodes, ...phase_1_Nodes, ...phase_2_Nodes, ...phase_3_Nodes, ...phase_4_Nodes, ...phase_0_Innovation_Nodes, ...phase_1_Innovation_Nodes, ...phase_2_Innovation_Nodes, ...phase_3_Innovation_Nodes, ...phase_4_Innovation_Nodes, ...data_Nodes]
+    const IntegratedViewEdges = [...phase_0_Edges, ...phase_1_Edges, ...phase_2_Edges, ...phase_3_Edges, ...phase_4_Edges, ...cyclic_Edges, ...phase_0_Innovation_Edges, ...phase_1_Innovation_Edges, ...phase_2_Innovation_Edges, ...phase_3_Innovation_Edges, ...phase_4_Innovation_Edges, ...data_Edges]
 
-    const [nodes, setNodes, onNodesChange] = useNodesState(minimalJourneyNodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(minimalJourneyEdges);
+    const [nodes, setNodes, onNodesChange] = useNodesState(IntegratedViewNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(IntegratedViewEdges);
 
     const onConnect = useCallback((connection) => {
         setEdges((eds) => addEdge(connection, eds));
@@ -519,11 +1063,11 @@ export const Flow = () => {
   return (
     <div style={{ width: '100%', height: '50vh' }}>
       <ReactFlow 
-        nodes={minimalJourneyNodes} 
-        edges={minimalJourneyEdges} 
-        nodeTypes={{ defaultNode: DefaultNode, groupNode: GroupNode }}
+        nodes={IntegratedViewNodes} 
+        edges={IntegratedViewEdges} 
+        nodeTypes={{ defaultNode: DefaultNode, groupNode: GroupNode, rightLeftNode: RightLeftNode }}
         edgeTypes={{ semiCircular: SemiCircularEdge, startEndEdge: StartEndEdge }}
-        
+
       >
         <Controls />
         <Background color="#aaa" gap={80} />
@@ -538,6 +1082,26 @@ export const Flow = () => {
 <Divider style={{marginTop:"1em"}}/>
 
 <Grid container spacing={4} margin="0em 0em">
+
+#### Data Domain Overview
+| Index | Data Source                          | Contents                                                                                      | Relevance                                                                                   | Sources at UK-Cologne                           |
+|-------|--------------------------------------|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|-------------------------------------------------|
+| 1     | Patient-Generated Health Data (PGHD) | Symptoms journal, family medical history, lifestyle factors, medication adherence records     | Early identification of symptoms, impact of lifestyle, tracking side effects                | Patient portals, mobile health apps             |
+| 2     | Electronic Health Records (EHR)      | Medical history, clinical notes, lab results, imaging studies, genetic tests, treatment plans | Comprehensive health overview, diagnostic data, treatment responses                         | Hospital Information System (HIS)               |
+| 3     | Imaging Databases                    | Ultrasound, MRI, CT scan images and reports                                                   | Diagnosis confirmation, disease staging, cyst monitoring                                    | Radiology Department                            |
+| 4     | Laboratory Information Systems (LIS) | Blood and urine test results (renal function, liver function, proteinuria, hematuria)         | Initial diagnosis, kidney function monitoring, complication detection                       | On-site Clinical Laboratories                   |
+| 5     | Genetic Testing Reports              | Genetic test results identifying ADPKD mutations                                              | Confirmatory diagnosis, family screening, prognostic information                            | Genetic Counseling Services                     |
+| 6     | Pharmacy Records                     | Prescribed medications, dosages, refill history                                               | Medication management, adherence tracking, drug interactions                                | Hospital Pharmacy                               |
+| 7     | Insurance Claims Databases           | Treatment claims, procedure codes, cost data                                                  | Economic impact of ADPKD treatment, care delivery patterns                                  | Administration and Billing Department           |
+| 8     | Clinical Trial Databases             | Data on clinical trials, investigational treatments, efficacy, safety outcomes                | Potential new treatments, emerging research findings                                        | Research and Development Department             |
+| 9     | Patient Registries                   | Data from ADPKD patients including demographics, treatment patterns, outcomes                 | Disease patterns, long-term outcomes, treatment effectiveness                               | Nephrology Department Registry                  |
+| 10    | EHIS, NHANES, GEDA & DEGS            | Epidemiological data on kidney disease prevalence, risk factors, health outcomes              | Population-level trends, risk factors related to ADPKD                                      | Public Health Department (External Source)      |
+| 11    | Social Media and Online Forums       | Patient experiences, treatment reviews, quality of life discussions                           | Patient-reported outcomes, peer support, patient education                                  | Online Patient Support Groups (External Source) |
+| 12    | Health and Wellness Apps             | Health tracking data, blood pressure readings, dietary intake, exercise                       | Lifestyle management, correlations between activities and disease progression or management | Mobile Health Applications (External Source)    |
+| 13    | MEDIC                                | tbd                                                                                           | tbd                                                                                         |                                                 |
+
+
+
   <Grid xs={12} sm={12} margin="1em 1em">
     #### Pre-Clinic Process
     1) Recognizing the Need for Medical Attention

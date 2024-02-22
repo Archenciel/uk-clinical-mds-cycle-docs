@@ -4,7 +4,7 @@ import "reactflow/dist/style.css";
 import ReactDOM from "react-dom";
 import { Handle, Position, MiniMap, MarkerType } from "reactflow";
 
-export default function DefaultNode({ data }) {
+export default function RightLeftNode({ data }) {
   const [showDetails, setShowDetails] = React.useState(false);
   const [detailBoxPosition, setDetailBoxPosition] = React.useState({});
   const nodeRef = React.useRef(null);
@@ -22,7 +22,6 @@ export default function DefaultNode({ data }) {
 
   return (
     <>
-      <Handle type="target" position={Position.Top} id="a" />
       <div
         ref={nodeRef}
         onMouseEnter={onMouseEnter}
@@ -61,24 +60,22 @@ export default function DefaultNode({ data }) {
             document.body
           )}
       </div>
-      <Handle type="source" position={Position.Bottom} id="b" />
-      {/* Left handles */}
+      {/* Left handle */}
+      <Handle type="source" position={Position.Left} id="l" />
+      {/* Right handles */}
+      <Handle type="target" position={Position.Right} id="r" />
+
+      {/* Upper and Lower handles */}
       <Handle
         type="source"
-        position={Position.Left}
-        id="left1"
+        position={Position.Top}
+        id="top1"
         style={{ top: "50%", visibility: "hidden" }}
       />
       <Handle
         type="source"
-        position={Position.Right}
-        id="right1"
-        style={{ top: "50%", visibility: "hidden" }}
-      />
-      <Handle
-        type="target"
-        position={Position.Right}
-        id="right2"
+        position={Position.Bottom}
+        id="bottom1"
         style={{ top: "50%", visibility: "hidden" }}
       />
     </>
